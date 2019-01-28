@@ -108,3 +108,6 @@ report/*
 !report/*.tex
 !report/*.bib
 !report/*.cls
+
+# data
+data/*
