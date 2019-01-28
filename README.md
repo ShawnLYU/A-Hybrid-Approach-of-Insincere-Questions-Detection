@@ -12,4 +12,4 @@ This project exists thanks to all the people who contribute.
 ## License
 
 [MIT](LICENSE)
-Copyright (c) 2019 Shawn
+Copyright (c) 2019 Shawn, JinyueF
