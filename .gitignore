@@ -111,3 +111,6 @@ report/*
 
 # data
 data/*
+
+# MACOS
+.DS_Store

@@ -5,3 +5,10 @@
 - Start writing proposal on Jan 28
 ### Next meeting
 - Jan 28
+
+# 2<sup>nd</sup> meeting, Jan 28
+### TODO
+- Figure out procedures of this project
+- Explore cutting edge techniques/methods of sentiment analysis
+### Next meeting
+- Jan 29
