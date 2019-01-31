@@ -86,4 +86,13 @@ CNN setup:
 
 #### [On so-called rhetorical questions](jinny/rhetorical_questions)
 - Linguistic background knowledge for rhetorical questions, might be useful in feature engineering 
+    + Question and answer co-exist
+    + formal indications of rhetorial/assertive questions:
+        * intonation pattern (up and then down), special particles(adverbials), verbal mood
+        * non-deontic modal verbs (modal verbs that do not express permission/obligations to do something)
+        * negation (which resonable man would vote conservatives? - no reasonable man would vote conservatives)
+        * comparison with an absolute value (could there be a safer place than prison)
+        * proform(interrogative pronoun) + expression of excusive absoluteness (
+        EEA) + descriptive term
+            - EEA: other than, if not (who else burns a cheque if not an idiot?)
 
