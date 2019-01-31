@@ -61,6 +61,17 @@
 \doublespacing % double space
 \section*{Literature Review}
 % for citation, use \citep{} instead of \cite
+Sarcasm detection: A similar problem to insincere questions classification is sarcasm detection. 
+
+- A deeper look into sarcastic tweets using deep convolutional neural networks
+\citep{poria2017}
+
+In this study, the researchers presented a CNN architecture that contained in parallel a baseline 2-layer CNN model that directly process the text and three pre-trained models covering three types of clues (in particular, sentiments, emotions and personalities) that could be beneficial for sarcasm detection. These pre-trained models were trained on their benchmark datasets and then used for feature extraction on the sarcastic tweets datasets. To merge the outputs of the four components, the researchers tested two methods: combining the outputs using SVM and appending extracted features from the pre-trained models into the baseline CNN hidden layers. The former method showed better results possibly because appending the extracted features into the baseline models compromised their meaningfulness. \\Although the baseline features (directly extracted from the word vectors) showed better predictions than all pre-trained models, the combination of the baseline and pre-trained models yielded the best performance. The result indicated that compared to completely distributing word representations, modularized components with specific tasks could improved the overall performance of a CNN model. Since we have established several characteristics that indicate a Quora question to be insincere, the idea of combining various components each responsible for detecting different classification clues can be valuable for our project. \\ One additional lesson from this study is that their CNN model with a relatively lower feature dimension (at 1,100) outperformed models using larger vector size (>500,000) both in terms of accuracy and computation speed. 
+
+- Fracking Sarcasm using Neural Network \citep{ghosh2016}
+
+This work presented a CNN-LSTM-DNN neural networks model for semantic modelling to detect sarcastic tweets. Consider that the information-bearing parts of a text could exit anywhere, the choice of convolutional neural networks and recurrent neural networks was reasonable as both CNN and RNN were capable of capturing temporal sequential information. Among RNN implementations, LSTMs were beneficial because of the easiness to train and the avoidance of vanishing or exploding gradients. The combination of CNN and RNN networks were also advantageous for the following reasons: 1) convolutional layer helped to extract abstract and compact features to be used as inputs to LSTM network; 2) LSTM compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length; 3) CNN could reduce feature variations so that CNN-LSTM worked more efficiently. On top of the LSTM layers, the researchers added a fully-connected DNN layer to map the features into a more separable space. The combination of CNN, LSTM, and DNN showed more superior results than recursive SVM, two-layer CNN, and two-layer RNN models. Consider the similarity between the tasks of this study and our project, we can construct our neural networks architecture following this CNN-LSTM pattern. 
+
 \citep{devlin2018bert}
 %------------------------------------------------
 
