@@ -21,3 +21,5 @@
 - Explain downstream NN tasks
 	- CNN-LSTM model
 	- Merging word-embeddings with statistical features using DNN or SVM
+- Questions
+	- What if we train our own embeddings? Advantages would be: typos could be properly processed hopefully(they may appear to be similar to the correct-spelt ones);
