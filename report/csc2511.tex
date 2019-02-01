@@ -61,7 +61,17 @@
 \doublespacing % double space
 \section*{Literature Review}
 % for citation, use \citep{} instead of \cite
-Sarcasm detection: A similar problem to insincere questions classification is sarcasm detection. 
+A related question to insincere questions classification is sarcasm detection, which is a frequently researched area in sentiment analysis\citep{joshi2017}. Sarcastic messages and insincere questions share many similarities in terms of their linguistic nature:
+
+\begin{enumerate}
+	\item \textbf{Sentiment Involvement:} Both sarcasm and rhetorical questions involve non-neutral sentiment under the disguise of a propositional or interrogative structure \citep{joshi2017, schmidt1977}. 
+	\item \textbf{Presence of Indicative Words:} One type of insincere questions contain expressions of excusive absoluteness, such as \textit{``if not"}; other rhetorical questions have non-deontic modal verbs and some other special particles that strongly indicate its persuative, not interrogative, nature \citep{schmidt1977}. Similarly, sarcastic texts also involve indicative words, such as \textit{`like'} in \textit{``like you understand"} \citep{joshi2017}. 
+	\item \textbf{Dropped Negation:} Many sarcastic sentences and rhetorical questions are meant to make a negative statement despite the absence of negation words  \citep{joshi2017, schmidt1977}. For instances, ``Having a cold is so fun" means ``Having a cold is not fun at all", and ``Can such a man be innocent?" means ``Such a man cannot be innocent."
+	\item \textbf{Intended Victim:} Sarcastic comments can be used to mock a victim, and insincere questions can be discriminative or irrespectful against certain groups of people. The hurtful components in both situations may be implicit or explicit. 
+	\item \textbf{Violation of Truthfulness:} Sarcastic comments that violate truthfulness resemble insincere questions that are based on false premises. To understand these languages, the listener needs to know the violation of truthfulness \citep{joshi2017}. This can be a hard problem in natural language processing as it largely depends on knowledge about certain people or certain topics. However, it is also possible the untruthful texts have syntactic or semantic characteristics.  
+\end{enumerate}
+
+Here we review several studies on sarcasm detection in the hope of transferring core concepts and methods to insincere question classification.
 
 - A deeper look into sarcastic tweets using deep convolutional neural networks
 \citep{poria2017}
@@ -71,6 +81,12 @@ In this study, the researchers presented a CNN architecture that contained in pa
 - Fracking Sarcasm using Neural Network \citep{ghosh2016}
 
 This work presented a CNN-LSTM-DNN neural networks model for semantic modelling to detect sarcastic tweets. Consider that the information-bearing parts of a text could exit anywhere, the choice of convolutional neural networks and recurrent neural networks was reasonable as both CNN and RNN were capable of capturing temporal sequential information. Among RNN implementations, LSTMs were beneficial because of the easiness to train and the avoidance of vanishing or exploding gradients. The combination of CNN and RNN networks were also advantageous for the following reasons: 1) convolutional layer helped to extract abstract and compact features to be used as inputs to LSTM network; 2) LSTM compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length; 3) CNN could reduce feature variations so that CNN-LSTM worked more efficiently. On top of the LSTM layers, the researchers added a fully-connected DNN layer to map the features into a more separable space. The combination of CNN, LSTM, and DNN showed more superior results than recursive SVM, two-layer CNN, and two-layer RNN models. Consider the similarity between the tasks of this study and our project, we can construct our neural networks architecture following this CNN-LSTM pattern. 
+
+- Robust Sentiment Detection on Twitter from Biased and Noisy Data \citep{barbosa2010}
+
+This work presented a 2-step sentiment analysis method that only utilized an SVM model for machine learning process, but its feature extraction methods allowed for robustness against noisy data. The researchers developed two feature sets designed to provide abstract representations of short texts: meta-features (including PoS tags and prior subjectivity and polarity) and syntactic features (namely frequencies of certain types of characters). 
+
+
 
 \citep{devlin2018bert}
 %------------------------------------------------
