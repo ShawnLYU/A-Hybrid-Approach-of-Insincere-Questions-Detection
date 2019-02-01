@@ -1,3 +1,8 @@
+# The story
+1. Sarcasm classification is a relatively well-studied topics in sentiment analysis. As insincerity is related with sarcasm in many ways(proved), models/methods of sarcasm classification may provide us with inspirations looking into insincere detection. Therefore we plan to review the latest models/methods from sarcasm detection and customize them into this project.    
+2. To embed texts into numerical representations, apart from work embeddings that are widely applied in NLP tasks, we would also try feature extraction with corpus statistics, such as the number of adjectives. Then we would compare the performances and try to combine these two ways. We expect that the combination would produce better results.
+
+
 # Data
 - Size
 	1. training data: 1,306,122 * 3

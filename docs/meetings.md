@@ -12,3 +12,12 @@
 - Explore cutting edge techniques/methods of sentiment analysis
 ### Next meeting
 - Jan 29
+
+# 3<sup>rd</sup> meeting with Frank, Feb 4
+- Tell our project story
+- Embeddings
+	- Explain word embeddings (Word2Vec, GloVe, and Bert)
+	- feature based extraction (tokenization, PoS-tagging, number of adjectives)
+- Explain downstream NN tasks
+	- CNN-LSTM model
+	- Merging word-embeddings with statistical features using DNN or SVM
