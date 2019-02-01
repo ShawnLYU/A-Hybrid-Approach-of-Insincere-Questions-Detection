@@ -92,6 +92,7 @@ This work presented a 2-step sentiment analysis method that only utilized an SVM
 
 
 
+
 \subsection*{Word Embeddings}
 A critical obstacle of language modeling is caused by the curse of dimensionality. In 2003, \citep{bengio2003neural} proposed a feadforwad Neural Network Language Model (NNLM) to learn a dense distributed representation\citep{hinton1986learning} for words, where both the word feature vectors and the parameters of that probability function are learned at the same time. NNLM was designed to learn $f \left( w _ { t } , \cdots , w _ { t - n + 1 } \right) = \hat { P } \left( w _ { t } | w _ { 1 } ^ { t - 1 } \right)$, $w _ { t } \in V$, where $w_1 \cdots w_T$ is the word sequence and $V$ is a large and finite vocabulary. This objective is divided into two steps: firstly the previous N words would be mapped into real vectors by a share projection matrix, which represents each word of the vocabulary with a distributed feature vectors; then the sequence of word feature vectors would be mapped into a probability distribution over $V$.
 
