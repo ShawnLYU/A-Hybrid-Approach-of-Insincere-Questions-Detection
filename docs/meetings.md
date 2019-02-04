@@ -23,3 +23,4 @@
 	- Merging word-embeddings with statistical features using DNN or SVM
 - Questions
 	- What if we train our own embeddings? Advantages would be: typos could be properly processed hopefully(they may appear to be similar to the correct-spelt ones);
+	- Which part of our project would be the proper one for us to make innovative improvements?
