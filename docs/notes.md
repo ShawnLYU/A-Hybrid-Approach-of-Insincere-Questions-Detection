@@ -45,3 +45,7 @@ No related feature? Rely on distributed representation?
 > - Uses sexual content (incest, bestiality, pedophilia) for shock value, and not to seek genuine answers
 
 Explicit rules for sexual content detection or rely on distributed representation? 
+
+# TODO before next checkpoint (Mar5<sup>th</sup>)
+1. Programming component and empirical methods
+2. Reports about the design of the program and the setup environment.
