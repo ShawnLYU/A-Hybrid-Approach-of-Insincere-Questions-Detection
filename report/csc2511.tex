@@ -78,17 +78,28 @@ This project originates from a Kaggle challenge. Kaggle provides a dataset of $1
 
 \subsection{Project Design}
 
-\subsubsection{Textual Space}
+\subsubsection{Text to Vector}
 
-This process involves preprocessing of texts including tokenization and PoS-tagging, feature extraction such as counting the number of adjectives, and application of machine learning algorithms such as SVM and random forests for classification. We will analyze features that have the highest impact on insincerity detection to reveal some statistical information concerning the expression profile of insincere questions. 
+The first part of our project would be mapping text data into numerical space for the further downstream task of classification. Here we adopt three ways of converting.
 
-\subsubsection{Embedding Space}
+\begin{itemize}
+	\item Textual Space
+
+This process involves preprocessing of texts including tokenization and PoS-tagging, feature extraction such as counting the number of adjectives, and application of machine learning algorithms such as Support Vector Machine (SVM) and Random Forests (RF) for classification. We will analyze features that have the highest impact on insincerity detection to reveal some statistical information concerning the expression profile of insincere questions. 
+
+	\item Embedding Space
 
 This approach requires the usage of libraries and the implementation of CNN-LSTM models using TensorFlow and PyTorch. We will have a closer examination of these techniques in the following literature review. In addition to the attempt of achieving satisfactory predictions, we will also visualize the relationships among word vectors to help explore the semantical information about insincere questions.
 
-\subsubsection{Modularization and Integration}
+	\item Modularization and Integration
 
-As we will discuss in the sections, the combination of different modularized components in a classification process may yield better performance than any module alone. We intend to deploy innovative methods to merge the textual space and embedding space modules. 
+As we will discuss in the following sections, the combination of different modularized components in a classification process may yield better performance than any module alone. We intend to deploy innovative methods to merge the textual space and embedding space modules. 	
+\end{itemize}
+
+\subsubsection{Classification}
+
+The second part would be implementing different models, including SVM, RF, and nerual networks as well, to perform classification over mapped data.
+
 
 \section{Literature Review}
 
@@ -107,7 +118,7 @@ As we have introduced before, a closely related topic to insincere question clas
 \end{enumerate}
 % Features in textual space vs embedding space
 
-\subsection{Statistics-focused Features} \label{statistic-features}
+\subsection{Statistics-Focused Features} \label{statistic-features}
 
  Feature selection in sentiment classification follows an established pattern where four types of features are frequently examined, namely term frequencies, parts of speech counts, the presence of opinion words, and negations\citep{medhat2014}. A particularly relevant study is \citep{barbosa2010}, where the authors presented a 2-step sentiment analysis method that only utilized an SVM model for the machine learning process, but its feature extraction methods allowed for robustness against noisy data. The researchers developed two feature sets designed to provide abstract representations of short texts: meta-features (including PoS tags and prior subjectivity and polarity) and syntactic features (namely frequencies of certain types of characters) \citep{barbosa2010}. The detection process was divided into two parts: subjectivity detection and polarity detection of the subjective texts. The experiment followed a traditional approach where the classifiers with highest information gain were created using Weka, and the learning process was completed using SVM algorithm\citep{barbosa2010}. Although this method no longer offers state-of-art performance, we still consider the feature selection methods valuable to our project. We intend to adapt the design in this study to obtain measurements of corpus statistics to feed as features into our neural network models. 
 
