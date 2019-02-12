@@ -109,8 +109,6 @@ report/*
 !report/*.bib
 !report/*.cls
 
-# data
-data/*
 
 # MACOS
 .DS_Store
