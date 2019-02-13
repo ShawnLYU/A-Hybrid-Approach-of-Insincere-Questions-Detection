@@ -43,6 +43,9 @@ Notes from Frank
 	2. Tagging + non-labelling
 	3. Non-tagging + labelling
 	4. Non-tagging + labelling
+	5. Non-word information analysis
+		- punctuations
+		- misspelled words? 
 2. Word Embeddings - **Shawn**
 	1. ELMo
 	2. GloVe
