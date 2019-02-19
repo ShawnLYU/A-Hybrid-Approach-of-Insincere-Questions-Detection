@@ -52,3 +52,13 @@ Notes from Frank
 	3. Word2Vec
 	4. Bert
 3. Report - **Shawn, Jinny**
+
+# 4<sup>th</sup> Feb 18
+1. Corpus Stats - **Jinny**
+        1. New graphs
+	2. Save stats as features
+	3. Ask Frank for suggestions (a. b.)
+2. Word embeddings - **Shawn**
+       1. ELMo
+       2. BERT
+3. Report - **Shawn & Jinny**
