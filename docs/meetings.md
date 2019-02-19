@@ -56,9 +56,12 @@ Notes from Frank
 # 4<sup>th</sup> Feb 18
 1. Corpus Stats - **Jinny**
         1. New graphs
+		- visualization improvements (better design; more complex graphs; more information)
+		- ref: AntV
 	2. Save stats as features
 	3. Ask Frank for suggestions (a. b.)
 2. Word embeddings - **Shawn**
        1. ELMo
        2. BERT
 3. Report - **Shawn & Jinny**
+	1. Look for more references about sentiment analysis
