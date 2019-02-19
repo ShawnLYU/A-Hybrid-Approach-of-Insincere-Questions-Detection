@@ -54,14 +54,15 @@ Notes from Frank
 3. Report - **Shawn, Jinny**
 
 # 4<sup>th</sup> Feb 18
-1. Corpus Stats - **Jinny**
-        1. New graphs
+1. Corpus Stats - **Jinny**       
+	1. New graphs     
 		- visualization improvements (better design; more complex graphs; more information)
 		- ref: AntV
 	2. Save stats as features
 	3. Ask Frank for suggestions (a. b.)
+		1. The main task will be to identify statistics that might affect classification. Mainly, this will involve looking at mismatches in labels (i.e., unbalanced data), and in an association between whatever features you extract and the classes. E.g., if you extract 100 features, do a significance test on each features between the labels, to see if one class 'behaves' very differently or one class or another.
 2. Word embeddings - **Shawn**
-       1. ELMo
-       2. BERT
+	1. ELMo
+	2. BERT
 3. Report - **Shawn & Jinny**
 	1. Look for more references about sentiment analysis
