@@ -12,37 +12,48 @@ df_data = pd.read_csv(filepath)
 
 nlp = spacy.load('en_core_web_sm')
 
-# helper function to count the number of certain types of characters 
-# (e.g. punctuation)
-count_char = lambda sentence, char_type: sum([1 for char in sentence if char in char_type])
-
 PUNCT_DICT = {'all_punctuation': string.punctuation, 'commas': ',', \
 'periods': '.', 'quotation_marks': '\'\"', 'question_marks': '?', \
 'exclamation_marks': '!', 'other_punctuations': [s for s in string.punctuation if s not in ',.\'\"?!']}
 
-# Return a dictionary of the number of each punctuation mark a sentence.
-build_punc_dict = lambda sentence: {key: count_char(sentence, value) for key, value in PUNCT_DICT.items()}
-
-# Helper function: count the number of a certain type of PoS in a sentence
-count_pos = lambda sentence, pos: sum([1 for token in nlp(sentence) if token.pos_ == pos])
-
-# Following is the list of all universal POS tags except 'PUNCT'
 POS_LIST = ['ADJ', 'ADV', 'INTJ', 'NOUN', 'PROPN', 'VERB', 'ADP', 'AUX', \
 'CCONJ', 'DET', 'NUM', 'PART', 'PRON', 'SCONJ', 'SYM', 'X']
 # Reference: https://universaldependencies.org/u/pos/
-
-# Return a dictionary of the number of each part of speech for a sentence.
-build_pos_dict = lambda sentence: {pos: count_pos(sentence, pos) for pos in POS_LIST}
-
-# Similar to POS, the following code is for named entities
-count_ent = lambda sentence, label: sum([1 for ent in nlp(sentence).ents if ent.label_ == label])
 
 ENT_LIST = ['PERSON', 'NORP', 'FAC', 'ORG', 'GPE', 'LOC', 'PRODUCT', 'EVENT', \
 'WORK_OF_ART', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY',
 'ORDINAL', 'CARDINAL']
 #reference: https://spacy.io/api/annotation#section-named-entities
 
-build_ent_dict = lambda sentence: {ent: count_ent(sentence, ent) for ent in ENT_LIST}
+def build_count_dict(sentence):
+	""" Return count dictionaries for sentence mapping from labels to the count of words
+	that satisfies a corresponding condition: 
+	1 - char in char_type (punctuation)
+	2 - taken.pos_ == pos (part of speech)
+	3 - ent.label_ == ent (named entites)
+	"""
+	punc = {key: 0 for key in PUNCT_DICT.keys()}
+	pos = {pos: 0 for pos in POS_LIST}
+	ent = {ent: 0 for ent in ENT_LIST}
+
+	doc = nlp(sentence)
+	ents = doc.ents
+
+	for word in sentence:
+		for key, value in PUNCT_DICT.items():
+			if word in value:
+				punc[key] += 1
+
+	for token in doc:
+		if token.pos_ in POS_LIST:
+			pos[token.pos_] += 1
+
+	for e in ents:
+		if e.label_ in ENT_LIST:
+			ent[e.label_] += 1
+
+	return punc, pos, ent
+
 
 def data_collection(dataframe):
 	""" Return statistical data of sentences with label, which is 0 for negative
@@ -61,9 +72,7 @@ def data_collection(dataframe):
 	bar = Bar("Collecting data over sentences", max=len(sentences))
 	for s in sentences:
 		# punctuations
-		punc_dict = build_punc_dict(s)
-		pos_dict = build_pos_dict(s)
-		ent_dict = build_ent_dict(s)
+		punc_dict, pos_dict, ent_dict = build_count_dict(s)
 
 		data = [punc_dict, pos_dict, ent_dict]
 
@@ -122,6 +131,7 @@ def main():
 			if ks_test(df_positive[label].values, df_negative[label].values, label):
 				value[1].append(label)
 		df = df_data[value[1]]
+		df['target'] = df_data['target']
 		filename = '{}.csv'.format(key)
 		df.to_csv(filename, index=0)
 
