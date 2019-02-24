@@ -66,3 +66,18 @@ Notes from Frank
 	2. BERT
 3. Report - **Shawn & Jinny**
 	1. Look for more references about sentiment analysis
+	
+# 5<sup>th</sup> Feb 24
+1. Corpus Stats
+	1. Clean double quotes - **Jinny**
+	2. Modify labels of samples involved with math symbols - **Shawn**
+	3. Corpus stats visualization
+2. Word embeddings
+	1. Applied pre-trained ELMo - **Shawn**
+	2. Embeddings visualization - **Shawn**
+3. Machine learning (with corpus stats)
+	1. SVM - **Shawn**
+	2. LR/RF - **Jinny**
+4. Neural Nets (two nets with more structures)
+	1. Shawn
+	2. Jinny
