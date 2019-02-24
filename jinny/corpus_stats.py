@@ -6,8 +6,8 @@ from scipy import stats
 from matplotlib import pyplot as plt
 from progress.bar import Bar
 
-# filepath = '../data/mytrain.csv'
-filepath = 'toy_set.csv' # a small set of 2000 questions for testing
+filepath = '../data/mytrain.csv'
+# filepath = 'toy_set.csv' # a small set of 2000 questions for testing
 df_data = pd.read_csv(filepath)
 
 nlp = spacy.load('en_core_web_sm')
@@ -121,8 +121,7 @@ def main():
 	data_collection(df_data)
 	df_positive, df_negative = df_data[df_data['target']==1], df_data[df_data['target'] == 0]
 
-	# Containers for punctuation marks/PoS/entities of which distributions are 
-	# significantly different between positive and negative samples
+	# Containers for punctuation marks/PoS/entities counts
 	features = {'punctuation':[PUNCT_DICT.keys(), []], \
 	'pos_tag':[POS_LIST, []], 'ent':[ENT_LIST, []]}
 
