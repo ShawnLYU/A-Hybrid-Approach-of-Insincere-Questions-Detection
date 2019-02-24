@@ -18,6 +18,8 @@
 - Short text V.S. long text
 - Traditional methods of preprocessing (removing stopwords, stemming, and etc.) may cause information lost which would have been utilized by NN
 - Word representations
+- Tokenize the string    
+    How to split regarding the punctuations?
 
 # Definition of insincere questions
 > - Has a non-neutral tone

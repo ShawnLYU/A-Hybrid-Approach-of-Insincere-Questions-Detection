@@ -29,3 +29,40 @@
 - Try ELMo
 - Word embeddings could also count as corpus stats, when texts are embedded, (visualized) and analyzed
 - Focusing on comparing different techniques/models, and providing explanations
+
+Notes from Frank
+- Try different word embeddings including Word2Vec, GloVe, ELMo, and Bert.
+- Compare the word embeddings and come up with our own hypothesis (with necessary visualisations).
+- Try PoS-tagging and feature extractions targeting at corpus stats.
+- In terms of classifiers, we would try CNN-LSTM and Random Forest, SVM (provided by Sklearn). And compare the results.
+- Dig deeper on relations between sarcasm and insincerity, and come up with our own hypothesis.
+
+# 4<sup>th</sup> Feb 12
+1. Corpus Stats - **Jinny**
+	1. Tagging + labelling
+	2. Tagging + non-labelling
+	3. Non-tagging + labelling
+	4. Non-tagging + labelling
+	5. Non-word information analysis
+		- punctuations
+		- misspelled words? 
+2. Word Embeddings - **Shawn**
+	1. ELMo
+	2. GloVe
+	3. Word2Vec
+	4. Bert
+3. Report - **Shawn, Jinny**
+
+# 4<sup>th</sup> Feb 18
+1. Corpus Stats - **Jinny**       
+	1. New graphs     
+		- visualization improvements (better design; more complex graphs; more information)
+		- ref: AntV
+	2. Save stats as features
+	3. Ask Frank for suggestions (a. b.)
+		1. The main task will be to identify statistics that might affect classification. Mainly, this will involve looking at mismatches in labels (i.e., unbalanced data), and in an association between whatever features you extract and the classes. E.g., if you extract 100 features, do a significance test on each features between the labels, to see if one class 'behaves' very differently or one class or another.
+2. Word embeddings - **Shawn**
+	1. ELMo
+	2. BERT
+3. Report - **Shawn & Jinny**
+	1. Look for more references about sentiment analysis
