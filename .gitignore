@@ -112,3 +112,6 @@ report/*
 
 # MACOS
 .DS_Store
+
+# local file
+toy_set*
