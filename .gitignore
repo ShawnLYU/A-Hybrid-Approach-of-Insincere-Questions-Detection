@@ -115,3 +115,6 @@ report/*
 
 # local file
 toy_set*
+
+# data
+data
