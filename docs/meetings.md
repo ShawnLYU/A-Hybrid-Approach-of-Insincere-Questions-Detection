@@ -81,3 +81,11 @@ Notes from Frank
 4. Neural Nets (two nets with more structures)
 	1. Shawn
 	2. Jinny
+
+# 6<sup>th</sup> Mar 4th
+1. Neural Nets - **Jinny**
+	1. CNN+LSTM+DNN
+	2. NN+Neural Network
+2. Metric - **Shawn**
+3. N - gram - **Jinny**
+4. Program designs (Pipeline) - **Shawn**
