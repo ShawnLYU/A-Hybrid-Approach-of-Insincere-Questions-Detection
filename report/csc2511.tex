@@ -215,9 +215,8 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 
 \subsection{Word Embedding}
 
-<<<<<<< HEAD
-\begin{table}[h!]
-=======
+
+
 To better exploit information embedded in the short contexts of Quora questions, we applied Embeddings from Language Models(ELMo) to embed our text data into vector space for the downstream analysis.
 
 As many previous models tried to embed words into same vectors, they failed to model polysemy properly. \citet{peters2018deep} therefore proposed a new contextualized word representations which can explore syntactic and semantic features of words and also how they vary in different contexts by embedding each token as a function of the input space. Normally, a language model would try to predict the next token given the previous context: $p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { 1 } , t _ { 2 } , \ldots , t _ { k - 1 } \right)$. Instead, a backward language model processes the sentence reversly, trying to predict the previous token provided with the furture context: $p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { k + 1 } , t _ { k + 2 } , \ldots , t _ { N } \right)$. ELMo adopted a bidirectional language model(biLM) which combines both forward and backward language models: $\sum _ { k = 1 } ^ { N } ( \log p \left( t _ { k } | t _ { 1 } , \ldots , t _ { k - 1 } ; \Theta _ { x } , \overrightarrow { \Theta } _ { L S T M } , \Theta _ { s } \right) + \log p \left( t _ { k } | t _ { k + 1 } , \ldots , t _ { N } ; \Theta _ { x } , \overleftarrow{\Theta } _ { L S T M } , \Theta _ { s } \right) )$. Therefore, for a \textit{L}-layer biLM using LSTM, there will be $2L+1$ representations for each token $t_k$:
@@ -232,8 +231,9 @@ In our project, the task specific weighting of all three layers of representatio
 
 
 
-\begin{table}[]
->>>>>>> add word embeddings and metrics
+
+
+\begin{table}[h!]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|ll}
 \cline{1-4}
