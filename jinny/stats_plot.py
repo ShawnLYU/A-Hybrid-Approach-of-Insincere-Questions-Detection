@@ -19,6 +19,16 @@ def create_count_df_dict(pos_df, neg_df, normalize=True):
 			result[label] = count_df
 	return result
 
+def create_value_df_dict(pos_df, neg_df, normalize=True):
+	result = {}
+	for label in pos_df.columns:
+		if label != 'target':
+			values={
+				'positive': list(pos_df[label].values), 
+				'negative': list(neg_df[label].values)}
+			result[label] = values
+	return result
+
 def corpus_level_plot(df_dict, kind):
 	nrow = (len(df_dict.keys())+1) // 2
 	ncol = 2
@@ -27,9 +37,10 @@ def corpus_level_plot(df_dict, kind):
 	y = 0
 	
 	for key in df_dict:
-		curr_df = df_dict[key]
-		title = kind + ' plot for ' + key
-		curr_df.plot(kind=kind, title=title, ax=axes[x,y], xticks=range(0, int(curr_df.max().max())))
+		if kind == 'bar':
+			curr_df = df_dict[key]
+			title = kind + ' plot for ' + key
+			curr_df.plot(kind=kind, title=title, legend=True, ax=axes[x,y], xticks=range(0, int(curr_df.max().max())))
 
 		# update ax_pos
 		if y == 0:
@@ -46,9 +57,20 @@ def plot_test():
 	splitted_dfs = [split_target(df) for df in df_list]
 
 	normalized_count_dicts = [create_count_df_dict(dfs[0], dfs[1]) for dfs in splitted_dfs]
+	value_dicts = [create_value_df_dict(dfs[0], dfs[1]) for dfs in splitted_dfs]
+	print(value_dicts[0].keys())
 
 	bar_figures = [corpus_level_plot(df_dict, 'bar') for df_dict in normalized_count_dicts]
-	box_figures = [corpus_level_plot(df_dict, 'box') for df_dict in normalized_count_dicts]
+	
+	pos_values = value_dicts[2]
+
+	box_figures = []
+	for key in pos_values:
+		figure, ax = plt.subplots()
+		labels, data = pos_values[key].keys(), pos_values[key].values()
+		ax.boxplot(data, labels=labels)
+		ax.set_title(key)
+		box_figures.append(figure)
 
 	def count_value(df):
 		result = {}
@@ -58,7 +80,6 @@ def plot_test():
 		return result
 
 	pos_punc_count = count_value(splitted_dfs[1][0])
-	print(pos_punc_count)
 	neg_punc_count = count_value(splitted_dfs[1][1])
 
 	colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99', '#adadeb']
