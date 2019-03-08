@@ -108,6 +108,7 @@ report/*
 !report/*.tex
 !report/*.bib
 !report/*.cls
+!report/graphs
 
 
 # MACOS
