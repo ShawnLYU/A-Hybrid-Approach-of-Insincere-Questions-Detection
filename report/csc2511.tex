@@ -27,7 +27,7 @@
 \usepackage[round]{natbib}
 \usepackage{lscape}
 \usepackage{graphicx}
-
+\graphicspath{ {./pics} }
 \bibliographystyle{plainnat}
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
@@ -201,6 +201,19 @@ others                                  & exclamation marks                     
 The results of \citep{poria2017} indicated that compared to completely distributing word representations, modularized components with specific tasks could improve the overall performance of a CNN model. As we discussed in the previous sections, we have established several characteristics that indicate a Quora question to be insincere; therefore, the idea of combining various components each responsible for detecting different classification clues can be valuable for our project.  Also, SVM classifiers are known to be ideal for processing text data due to the sparse nature of text \citep{medhat2014}. One additional lesson from this study is that their CNN model with a relatively lower feature dimension (at 1,100) outperformed models using larger vector size (>500,000) both in terms of accuracy and computation speed \citep{poria2017}. 
 
 Among RNN implementations, LSTMs are advantageous because such architecture is easier to train and suffers less from vanishing or exploding gradients. The combination of CNN and RNN networks is also  for the several reasons. First, convolutional layer helped to extract abstract and compact features to be used as inputs to LSTM network \citep{chan2015}, which in turn compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length. Additionally, the convolution layers reduce feature variations so that CNN-LSTM work more efficiently \citep{ghosh2016}.
+
+\subsection{Evaluating Metrics}
+
+
+\subsection{Program Design}
+
+
+
+
+
+
+
+
 
 %------------------------------------------------
 
