@@ -27,7 +27,9 @@
 \usepackage[round]{natbib}
 \usepackage{lscape}
 \usepackage{graphicx}
+
 \usepackage[export]{adjustbox}
+\usepackage{siunitx}
 
 \graphicspath{ {./pics} }
 \bibliographystyle{plainnat}
@@ -137,13 +139,7 @@ Before we feed the data into our models, we need to project it into vectors of r
 
 \textbf{Global Vectors for Word Representations(GloVe).} Although methods for word embeddings claimed great success in capturing syntactic and semantic properties, \citet{pennington2014glove} found that there were still drawbacks in the two major models: global matrix factorization and local context window methods. For instance, global matrix factorization performs poorly in word analogy task, while local context window methods like skip-gram fail to exploit the statistical information provided by copus. Therefore, they proposed a log-bilinear regression model that combines the advantages of the two models called Global Vectors for Word Representations, as the global corpus information are properly captured in this model. In designing their model, they first constructed a word-word co-occurance matrix $X$, where $X_{ij}$ refers to the number of times word $j$ appears in the context of word $i$. Then they defined $X_i=\sum_kX_{ik}$ indicating the number of times word $i$ serves as the context for any other word $k$. Finally, they let $P_{ij}=P(j|i)=X_{ij}/X_i$ be the probability of word $j$ appeared in the context of word $i$. With the ratios of co-occurance probabilities, they found that certain aspects of meaning could be well captured, therefore they encoded it into GloVe and achieved higher accuracy with lower computational cost.
 
-\textbf{Embeddings from Language Models(ELMo).} As many previous models tried to embed words into same vectors, they failed to model polysemy properly. \citet{peters2018deep} therefore proposed a new contextualized word representations which can explore syntactic and semantic features of words and also how they vary in different contexts by embedding each token as a function of the input space. Normally, a language model would try to predict the next token given the previous context: $p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { 1 } , t _ { 2 } , \ldots , t _ { k - 1 } \right)$. Instead, a backward language model processes the sentence reversly, trying to predict the previous token provided with the furture context: $p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { k + 1 } , t _ { k + 2 } , \ldots , t _ { N } \right)$. ELMo adopted a bidirectional language model(biLM) which combines both forward and backward language models: $\sum _ { k = 1 } ^ { N } ( \log p \left( t _ { k } | t _ { 1 } , \ldots , t _ { k - 1 } ; \Theta _ { x } , \overrightarrow { \Theta } _ { L S T M } , \Theta _ { s } \right) + \log p \left( t _ { k } | t _ { k + 1 } , \ldots , t _ { N } ; \Theta _ { x } , \overleftarrow{\Theta } _ { L S T M } , \Theta _ { s } \right) )$. Therefore, for a \textit{L}-layer biLM using LSTM, there will be $2L+1$ representations for each token $t_k$:
-\begin{align} 
-\begin{split}
-  R _ { k } & = \left\{ \mathbf { x } _ { k } ^ { L M } , \overrightarrow { \mathbf { h } } _ { k , j } ^ { L M } , \overleftarrow { \mathbf { h } } _ { k , j } ^ { L M } | j = 1 , \ldots , L \right\} \\ & = \left\{ \mathbf { h } _ { k , j } ^ { L M } | j = 0 , \ldots , L \right\},
-\end{split}         
-\end{align}
-where $\mathbf { h } _ { k , 0 } ^ { L M }$ is token layer while ${ \mathbf { h } } _ { k , j } ^ { L M } = [\overrightarrow { \mathbf { h } } _ { k , j } ^ { L M } ; \overleftarrow { \mathbf { h } } _ { k , j } ^ { L M }]$ refers to biLSTM layers. Then, ELMo would integrate all representations into one single vector for each specific downstream NLP tasks with $\mathbf { E } \mathbf { L } \mathbf { M } \mathbf { o } _ { k } ^ { \operatorname { task } } = E \left( R _ { k } ; \Theta ^ { t a s k } \right) = \gamma ^ { \operatorname { task } } \sum _ { j = 0 } ^ { L } s _ { j } ^ { t a s k } \mathbf { h } _ { k , j } ^ { L M }$.
+
 
 \textbf{Word Embeddings-based Features. }A study on word embedding-based features \citep{joshi2016} provides insights on how to combine word embeddings with feature selection. This work examined how features calculated from word embedding vectors could augment existing feature sets including n-grams, dictionary-based features, syntactical features and pattern-based features. More specifically, the researchers attempted to use word vector distances to detect context incongruity independent of sentiment changes. The results indicated that word embedding-based features enhanced performance \citep{joshi2016}. This method might be useful in our project for two reasons: 1) insincere questions may also contain context incongruity because of conflict between asking a question while making a statement; 2) questions that have discriminative or sexual language may be detected based on the semantic similarities to a set of sensitive keywords.  In this system, known sources of errors include multiple-sense-induced embedding issues, incapability to identify contextual information, and non-sarcastic metaphors\citep{joshi2016}. We expect the latter two points have lower impact on insincerity detection than sarcasm detection because contextual information and metaphors are less relevant to insincere questions than sarcastic messages. 
 
@@ -165,7 +161,7 @@ Another sarcasm detection study \citep{ghosh2016} presented a CNN-LSTM-DNN neura
 This project originates from a Kaggle challenge. Kaggle provides a dataset of $1,306,122$ questions with three fields \footnote{https://www.kaggle.com/c/quora-insincere-questions-classification/data}, namely \textit{qid} (a question id), \textit{question\_text} (the content of a question) and \textit{target} (where insincere questions are labeled as 1). 
 % We will also be using word embeddings including \textit{Word2Vec, GloVe, ELMo} and \textit{BERT}. 
 
-For the entire project, we rely on pandas library for data analysis because of its easiness to use and high performance. Our first step was to divide the dataset into a training set and a testing set in the ratio of 80:20. After a general analysis of the training set, we figured out that most of the questions were around 50 tokens in length, and there were only 22 sentences that were longer than 100 tokens. Thus we removed these 22 sentences to improve training efficiency. These process left us with 104,4839 training examples. 
+For the entire project, we rely on pandas library for data analysis because of its easiness to use and high performance. Our first step was to divide the dataset into a training set and a testing set in the ratio of 80:20. After a general analysis of the training set, we figured out that most of the questions were around 50 tokens in length, and there were only 22 sentences that were longer than 100 tokens. Thus we removed these 22 sentences to improve training efficiency. These process left us with \num[group-separator={,}]{1044839} training examples. 
 
 We purposely did not treat our data with the commonly used stop-word removal step because previous studies have shown that stop-word removal in twitter sentiment analysis tasks could hinder model performance because the typical stop-word lists were not applicable to twitter corpus \citep{giachanou2016}. Similarly, stop words in short Quora questions may also present discrimination power. 
 
@@ -219,7 +215,25 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 
 \subsection{Word Embedding}
 
+<<<<<<< HEAD
 \begin{table}[h!]
+=======
+To better exploit information embedded in the short contexts of Quora questions, we applied Embeddings from Language Models(ELMo) to embed our text data into vector space for the downstream analysis.
+
+As many previous models tried to embed words into same vectors, they failed to model polysemy properly. \citet{peters2018deep} therefore proposed a new contextualized word representations which can explore syntactic and semantic features of words and also how they vary in different contexts by embedding each token as a function of the input space. Normally, a language model would try to predict the next token given the previous context: $p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { 1 } , t _ { 2 } , \ldots , t _ { k - 1 } \right)$. Instead, a backward language model processes the sentence reversly, trying to predict the previous token provided with the furture context: $p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { k + 1 } , t _ { k + 2 } , \ldots , t _ { N } \right)$. ELMo adopted a bidirectional language model(biLM) which combines both forward and backward language models: $\sum _ { k = 1 } ^ { N } ( \log p \left( t _ { k } | t _ { 1 } , \ldots , t _ { k - 1 } ; \Theta _ { x } , \overrightarrow { \Theta } _ { L S T M } , \Theta _ { s } \right) + \log p \left( t _ { k } | t _ { k + 1 } , \ldots , t _ { N } ; \Theta _ { x } , \overleftarrow{\Theta } _ { L S T M } , \Theta _ { s } \right) )$. Therefore, for a \textit{L}-layer biLM using LSTM, there will be $2L+1$ representations for each token $t_k$:
+\begin{align} 
+\begin{split}
+  R _ { k } & = \left\{ \mathbf { x } _ { k } ^ { L M } , \overrightarrow { \mathbf { h } } _ { k , j } ^ { L M } , \overleftarrow { \mathbf { h } } _ { k , j } ^ { L M } | j = 1 , \ldots , L \right\} \\ & = \left\{ \mathbf { h } _ { k , j } ^ { L M } | j = 0 , \ldots , L \right\},
+\end{split}         
+\end{align}
+where $\mathbf { h } _ { k , 0 } ^ { L M }$ is token layer while ${ \mathbf { h } } _ { k , j } ^ { L M } = [\overrightarrow { \mathbf { h } } _ { k , j } ^ { L M } ; \overleftarrow { \mathbf { h } } _ { k , j } ^ { L M }]$ refers to biLSTM layers. Then, ELMo would integrate all representations into one single vector for each specific downstream NLP tasks with $\mathbf { E } \mathbf { L } \mathbf { M } \mathbf { o } _ { k } ^ { \operatorname { task } } = E \left( R _ { k } ; \Theta ^ { t a s k } \right) = \gamma ^ { \operatorname { task } } \sum _ { j = 0 } ^ { L } s _ { j } ^ { t a s k } \mathbf { h } _ { k , j } ^ { L M }$.
+
+In our project, the task specific weighting of all three layers of representations shown as the equations 1 in  \citet{peters2018deep} (\textit{i.e.} character-convnet output and two LSTM outputs) would be find-tuned.
+
+
+
+\begin{table}[]
+>>>>>>> add word embeddings and metrics
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|ll}
 \cline{1-4}
@@ -246,6 +260,13 @@ Among RNN implementations, LSTMs are advantageous because such architecture is e
 	\label{figure:nnarchitecture}
 \end{figure}
 \subsection{Evaluating Metrics}
+
+In the \num[group-separator={,}]{1044839} training samples, there are \num[group-separator={,}]{980167} samples labeled as sincere while \num[group-separator={,}]{64672} of them are labeled as insincere. Therefore, $accuracy = \frac{ the\ number\ of\ correctly-classified\ samples}{the\ number\ of\ all\ samples}$ is not appropriate for evaluating the model. In this section, targeting at this biased dataset, different evaluation matrics will be discussed and applied.
+
+There are two distinct values of \textit{target} in our dataset: 0 indicates a sincere question while 1 indicates a insincere one. In this project we define samples that are labeled as 1 to be positive while those labeled as 0 to be negative. Hence we could calculate model's precision, recall and F1 score accordingly. Provided that, these statistical metrics could be applied for evaluations.
+
+
+
 
 
 \subsection{Program Design}
