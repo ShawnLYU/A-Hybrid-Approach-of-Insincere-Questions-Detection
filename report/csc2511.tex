@@ -27,6 +27,7 @@
 \usepackage[round]{natbib}
 \usepackage{lscape}
 \usepackage{graphicx}
+\usepackage[export]{adjustbox}
 
 \bibliographystyle{plainnat}
 %----------------------------------------------------------------------------------------
@@ -171,19 +172,53 @@ Another pre-processing step we conducted was correcting one specific set of nois
 
 \subsection{Corpus Statistics} \label{corpus-stats}
 
+\subsubsection{Feature Extraction}
+
 For corpus statistics analysis, we used pandas for data handling, spaCy for natural language processing, scipy for statistical testing, and matplotlib for plotting. 
 
 In our current setup, we look into the statistical information in three major aspects: punctuation marks, parts-of-speech tags, and named entities. Although spaCy PoS-tagger includes PUNCT (punctuation) as one lexical category, we developed our own list of punctuation marks for finer-grained details. The PoS tags used followed the Universal Dependencies scheme \citep{pos-tag}, and the named entities list followed the categorization provided by spaCy Named Entity Recognition model trained on OntoNotes 5 corpus \citep{spacy-named-entity}. For each specific item in these three categories, we first compute the frequencies of an item in all sentences, and then conducted the Kolmogorov–Smirnov (KS test) to compare their distributions in positive and negative samples. Since we used two-tail tests, the p-value threshold for significance is 0.01. All the tested features are listed in Table \ref{table:stats-features}. For all the significant features, we also generated boxplots, histograms, and kernel density estimation graphs to visualize the distributions. 
 
 Using KS test for discrete distributions is a compromised choice the test is less powerful if the distributions are not continuous. The large sample size is also problematic as it reduces the power of significance testing. At this point, we use this test as a coarse filtering process. One benefit of this approach is that the conservative reduction of number of features allows us to conduct more comprehensive corpus statistics analysis. In later steps, we will incorporate more feature selection methods to further reduce feature dimensions if necessary. 
 
-Another feature that we intend to add to our analysis is the sentiment measurement from TextBlob library. One main type of insincere question is questions with non-neutral tone, so we believe that directly feeding sentiment information to our model would be beneficial. 
+Another feature that we intend to add to our analysis is the sentiment measurement from TextBlob library. We believe that directly feeding sentiment information to our model would be beneficial because a non-neutral tone is one of the main indicators of insincere questions. 
 
-\subsection{Machine Learning Classifiers}
+\subsubsection{Visualization}
+
+To visualize extracted statistical features about punctuation, parts-of-speech tag, and named entities at corpus level, we created bar plots for the counts of the occurrences over the entire corpus. To visualize the distributions at sentence level, we used boxplots. For certain features of which the distributions are extremely skewed, our visualization methods may not provide the best representation. We have tried to use different types of plots to complement each other to partially solve this problem. For example, we created pie chart for punctuation marks to show the relative distribution in one sample population. Among the three aspects, the graphs showing the distributions of parts-of-speech tags are the most informative. As we are still refining these visualization techniques, here we only present some examples (figure \ref{figure:pos_bar}, figure \ref{figure:verb_box}, figure \ref{figure:puncpie}) to show our progress. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{graphs/pos_bar.jpeg}
+	\caption{Bar plots of normalized counts of PoS tags in positive and negative samples}
+	\medskip
+	\small
+	Positive sentences are labelled as insincere. The y-axis is the normalized counts and x-axis is the number of occurrences of a pos tag in a sentence. 
+	\label{figure:pos_bar}
+\end{figure}
+
+
+\begin{figure} 
+	\includegraphics[height=5cm, center]{graphs/verb.png}
+	\caption{Boxplot for the distribuition of verbs in positive and negative samples}
+	\medskip
+	\small
+	\label{figure:verb_box}
+
+\end{figure}
+
+
+\begin{figure} 
+	\includegraphics[width=\textwidth, center]{graphs/puncpiecharts.png}
+	\caption{Pie charts for proportions of punctuations in positive and negative samples}
+	\medskip
+	\small
+	\label{figure:puncpie}
+\end{figure}
+
 
 \subsection{Word Embedding}
 
-\begin{table}[]
+\begin{table}[h!]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|ll}
 \cline{1-4}
@@ -201,6 +236,16 @@ others                                  & exclamation marks                     
 The results of \citep{poria2017} indicated that compared to completely distributing word representations, modularized components with specific tasks could improve the overall performance of a CNN model. As we discussed in the previous sections, we have established several characteristics that indicate a Quora question to be insincere; therefore, the idea of combining various components each responsible for detecting different classification clues can be valuable for our project.  Also, SVM classifiers are known to be ideal for processing text data due to the sparse nature of text \citep{medhat2014}. One additional lesson from this study is that their CNN model with a relatively lower feature dimension (at 1,100) outperformed models using larger vector size (>500,000) both in terms of accuracy and computation speed \citep{poria2017}. 
 
 Among RNN implementations, LSTMs are advantageous because such architecture is easier to train and suffers less from vanishing or exploding gradients. The combination of CNN and RNN networks is also  for the several reasons. First, convolutional layer helped to extract abstract and compact features to be used as inputs to LSTM network \citep{chan2015}, which in turn compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length. Additionally, the convolution layers reduce feature variations so that CNN-LSTM work more efficiently \citep{ghosh2016}.
+
+\begin{figure} 
+	\includegraphics[height=0.7\textheight, center]{graphs/nn_architecture.png}
+	\caption{Pie charts for proportions of punctuations in positive and negative samples}
+	\medskip
+	\small
+	\label{figure:nnarchitecture}
+\end{figure}
+
+
 
 %------------------------------------------------
 
