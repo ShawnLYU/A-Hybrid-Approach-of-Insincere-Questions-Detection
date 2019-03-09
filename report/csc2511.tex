@@ -30,14 +30,14 @@
 
 \usepackage[export]{adjustbox}
 \usepackage{siunitx}
-
+\usepackage{indentfirst}
 \graphicspath{ {./pics} }
 \bibliographystyle{plainnat}
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\textbf{Quora Insincere Questions Classification}} % Title and subtitle
+\title{\textbf{A Hybrid Approach of Insincerity Analysis}} % Title and subtitle
 
 \author{\textbf{Mengxuan Lyu, Jinyue Feng} \\ \textit{University of Toronto}} % Author and institution
 
@@ -173,7 +173,7 @@ Using KS test for discrete distributions is a compromised choice the test is les
 
 Another feature that we intend to add to our analysis is the sentiment measurement from TextBlob library. We believe that directly feeding sentiment information to our model would be beneficial because a non-neutral tone is one of the main indicators of insincere questions. 
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|ll}
 \cline{1-4}
@@ -189,9 +189,9 @@ others                                  & exclamation marks                     
 
 \subsubsection{Visualization}
 
-To visualize extracted statistical features about punctuation, parts-of-speech tag, and named entities at corpus level, we created bar plots for the counts of the occurrences over the entire corpus. To visualize the distributions at sentence level, we used boxplots. For certain features of which the distributions are extremely skewed, our visualization methods may not provide the best representation. We have tried to use different types of plots to complement each other to partially solve this problem. For example, we created pie chart for punctuation marks to show the relative distribution in one sample population. Among the three aspects, the graphs showing the distributions of parts-of-speech tags are the most informative. As we are still refining these visualization techniques, here we only present some examples (figure \ref{figure:pos_bar}, figure \ref{figure:verb_box}, figure \ref{figure:puncpie}) to show our progress. 
+To visualize extracted statistical features about punctuation, parts-of-speech tag, and named entities at corpus level, we created bar plots for the counts of the occurrences over the entire corpus. To visualize the distributions at sentence level, we used boxplots. For certain features of which the distributions are extremely skewed, our visualization methods may not provide the best representation. We have tried to use different types of plots to complement each other to partially solve this problem. For example, we created pie chart for punctuation marks to show the relative distribution in one sample population. Among the three aspects, the graphs showing the distributions of parts-of-speech tags are the most informative. As we are still refining these visualization techniques, here we only present some examples (Figure \ref{figure:pos_bar}, Figure \ref{figure:verb_box}, Figure \ref{figure:puncpie}) to show our progress. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{graphs/pos_bar.jpeg}
 	\caption{Bar plots of normalized counts of PoS tags in positive and negative samples}
@@ -202,7 +202,7 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 \end{figure}
 
 
-\begin{figure}[h] 
+\begin{figure}[ht] 
 	\includegraphics[height=5cm, center]{graphs/verb.png}
 	\caption{Boxplot for the distribuition of verbs in positive and negative samples}
 	\medskip
@@ -212,7 +212,7 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 \end{figure}
 
 
-\begin{figure}[h] 
+\begin{figure}[ht] 
 	\includegraphics[width=\textwidth, center]{graphs/puncpiecharts.png}
 	\caption{Pie charts for proportions of punctuations in positive and negative samples}
 	\medskip
@@ -223,6 +223,17 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 In addition to the statictical data, we also plan to visualize the word embeddings of labeled and unlabelled sentences. Consider the size of our corpus, we will first extract the most frequent unigrams, and visualize the correponding word vectors using appropriate methods such as t-SNE plots. 
 
 
+\subsection{Program Design}
+\begin{figure}[ht]
+	\includegraphics[width=0.6\textheight, center]{graphs/program_desi_flow.png}
+	\caption{Program design}
+	\label{figure:program_design}
+\end{figure}
+When designing this program, we implemented each part of the model into modules. As shown in Figure \ref{figure:program_design}, on the one hand, Quora question samples that are in textual form would be firstly embedded into numerical space with ELMo. Then those embedded vectors would be fed into CNN-LSTM. On the other hand, statistics features including PoS-tagging, punctuation marks, named entities, and sentiment scores are computed as well. Then, we append the selected corpus statistics with significant differences to the output tensors of CNN-LSTM. Finally, we apply Support Vector Machine (SVM) to the vector containing features from both word embeddings and corpus statistics. Evaluation metrics would be applied at the end of the experiments.
+
+
+
+\section{Methodology}
 \subsection{Word Embedding}
 
 To better exploit information embedded in the short contexts of Quora questions, we applied Embeddings from Language Models(ELMo) to embed our text data into vector space for the downstream analysis instead of naive one-hot encoding.
@@ -246,8 +257,15 @@ In our project, ELMo was applied and the task specific weighting of all three la
 
 
 \subsection{Neural Networks}
-
-Based on our review of neural nerworks models in the field of sentiment analysis, we decided to adopt a CNN-LSTM-DNN model as illustrated in figure \ref{figure:nnarchitecture}. 
+\begin{figure}[ht!]
+	\includegraphics[height=0.7\textheight, center]{graphs/nn_architecture.png}
+	\caption{Illustration of neural networks architecture}
+	\medskip
+	\small
+	In this figure, the same types of components are shown in the same colours. The blocks with dashed lines correspond to layers that typically appear in a neural networks, but possibly hinder performance according previous studies. We decide to construct a baseline model without these layers, and add them in later to compare the performance if time allows. 
+	\label{figure:nnarchitecture}
+\end{figure}
+Based on our review of neural nerworks models in the field of sentiment analysis, we decided to adopt a CNN-LSTM-DNN model as illustrated in Figure \ref{figure:nnarchitecture}. 
 
 Studies have shown that compared to completely distributing word representations, modularized components with specific tasks could improve the overall performance of a CNN model \citep{poria2017}. As we discussed in the previous sections, we have established several characteristics that indicate a Quora question to be insincere; therefore, the idea of combining various components each responsible for detecting different classification clues can be valuable for our project. In our design, the network is generally divided into two components: a baseline CNN-LSTM model taking word vectors as inputs, and extracted syntactic and semantic features from existing libraries. Ideally, we intend to train the baseline model first, and feed the additional features (punctuation marks, named entities, PoS tags, and sentiment scores) one at a time to explore their effects on model performance. 
 
@@ -256,31 +274,12 @@ Among RNN implementations, LSTMs are advantageous because such architecture is e
 To combine different components, we plan to feed the output of LSTM layers and the pre-extracted features into a fully connected layer to match the features into a more separable space. Another design is to first feed the extracted features into a fully connected layers, and than concatenate the output of this layer with the output of LSTMs as the input vector for the final fully connected layer. Consider that SVM classifiers are known to be ideal for processing text data due to the sparse nature of text \citep{medhat2014}, we apply SVM on top of the neural network for classification. 
 
 
-\begin{figure}[h!]
-	\includegraphics[height=0.7\textheight, center]{graphs/nn_architecture.png}
-	\caption{Illustration of neural networks architecture}
-	\medskip
-	\small
-	In this figure, the same types of components are shown in the same colours. The blocks with dashed lines correspond to layers that typically appear in a neural networks, but possibly hinder performance according previous studies. We decide to construct a baseline model without these layers, and add them in later to compare the performance if time allows. 
-	\label{figure:nnarchitecture}
-\end{figure}
+
 \subsection{Evaluating Metrics}
 
 In the \num[group-separator={,}]{1044839} training samples, there are \num[group-separator={,}]{980167} samples labeled as sincere while \num[group-separator={,}]{64672} of them are labeled as insincere. Therefore, $accuracy = \frac{ the\ number\ of\ correctly-classified\ samples}{the\ number\ of\ all\ samples}$ is not appropriate for evaluating the model. In this section, targeting at this biased dataset, different evaluation matrics will be discussed and applied.
 
 There are two distinct values of \textit{target} in our dataset: 0 indicates a sincere question while 1 indicates a insincere one. In this project we define samples that are labeled as 1 to be positive while those labeled as 0 to be negative. Hence we could calculate model's precision, recall and F1 score accordingly. Provided that, these statistical metrics could be applied for evaluations.
-
-
-
-
-
-\subsection{Program Design}
-
-
-
-
-
-
 
 
 
