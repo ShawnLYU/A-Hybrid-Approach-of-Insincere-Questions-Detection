@@ -173,11 +173,25 @@ Using KS test for discrete distributions is a compromised choice the test is les
 
 Another feature that we intend to add to our analysis is the sentiment measurement from TextBlob library. We believe that directly feeding sentiment information to our model would be beneficial because a non-neutral tone is one of the main indicators of insincere questions. 
 
+\begin{table}[h!]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|ll}
+\cline{1-4}
+& punctuation marks & PoS tags & named entities &  &  \\ \cline{1-4}
+\begin{tabular}[c]{@{}l@{}}Statistically \\ Significant \\ Features\end{tabular} & \begin{tabular}[c]{@{}l@{}}all punctuation marks \\- (from string.punctuations)\\ commas\\ periods\\ quotation marks\\ question marks\\ other punctuation marks\end{tabular} & \begin{tabular}[c]{@{}l@{}}ADJ: adjective\\ ADP:  adposition\\ ADV:  adverb\\ CCONJ:  coordinating conjunction\\ DET:  determiner\\ NOUN:  noun\\ NUM:  numeral\\ PART:  particle\\ PRON:  pronoun\\ PROPN:  proper noun\\ VERB:  verb\end{tabular} & \begin{tabular}[c]{@{}l@{}}PERSON\\-  People, including fictional. \\ NORP\\-  Nationalities or religious or political groups. \\ ORG\\-  Companies, agencies, institutions, etc. \\ GPE\\-  Countries, cities, states. \\ LOC\\-  Non-GPE locations, mountain ranges, bodies of water. \\ DATE\\-  Absolute or relative dates or periods. \\ CARDINAL\\-  Numerals that do not fall under another type.\end{tabular}                      &  &  \\ \cline{1-4}
+others                                  & exclamation marks                     & \begin{tabular}[c]{@{}l@{}}AUX: auxiliary\\ INTJ: interjection\\ SCONJ: subordinating conjunction\\ SYM: symbol\\ X: other\end{tabular}          & \begin{tabular}[c]{@{}l@{}}FAC\\-  Buildings, airports, highways, bridges, etc.\\ PRODUCT\\-  Objects, vehicles, foods, etc. (Not services.)\\ EVENT\\-  Named hurricanes, battles, wars, sports events, etc.\\ TIME\\-  Times smaller than a day. \\ PERCENT\\-  Percentage, including "\%". \\ MONEY\\-  Monetary values, including unit. \\ QUANTITY\\-  Measurements, as of weight or distance. \\ WORK\_OF\_ART\\-  Titles of books, songs, etc. \\ LAW\\-  Named documents made into laws. \\ LANGUAGE\\-  Any named language.\\ ORDINAL\\-  "first", "second", etc.\end{tabular} &  &  \\ \cline{1-4}
+\end{tabular}%
+}
+\caption{Features for KS tests}
+ \label{table:stats-features}
+\end{table}
+
+
 \subsubsection{Visualization}
 
 To visualize extracted statistical features about punctuation, parts-of-speech tag, and named entities at corpus level, we created bar plots for the counts of the occurrences over the entire corpus. To visualize the distributions at sentence level, we used boxplots. For certain features of which the distributions are extremely skewed, our visualization methods may not provide the best representation. We have tried to use different types of plots to complement each other to partially solve this problem. For example, we created pie chart for punctuation marks to show the relative distribution in one sample population. Among the three aspects, the graphs showing the distributions of parts-of-speech tags are the most informative. As we are still refining these visualization techniques, here we only present some examples (figure \ref{figure:pos_bar}, figure \ref{figure:verb_box}, figure \ref{figure:puncpie}) to show our progress. 
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{graphs/pos_bar.jpeg}
 	\caption{Bar plots of normalized counts of PoS tags in positive and negative samples}
@@ -188,7 +202,7 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 \end{figure}
 
 
-\begin{figure} 
+\begin{figure}[h] 
 	\includegraphics[height=5cm, center]{graphs/verb.png}
 	\caption{Boxplot for the distribuition of verbs in positive and negative samples}
 	\medskip
@@ -198,13 +212,15 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 \end{figure}
 
 
-\begin{figure} 
+\begin{figure}[h] 
 	\includegraphics[width=\textwidth, center]{graphs/puncpiecharts.png}
 	\caption{Pie charts for proportions of punctuations in positive and negative samples}
 	\medskip
 	\small
 	\label{figure:puncpie}
 \end{figure}
+
+In addition to the statictical data, we also plan to visualize the word embeddings of labeled and unlabelled sentences. Consider the size of our corpus, we will first extract the most frequent unigrams, and visualize the correponding word vectors using appropriate methods such as t-SNE plots. 
 
 
 \subsection{Word Embedding}
@@ -229,31 +245,23 @@ where $\mathbf { h } _ { k , 0 } ^ { L M }$ is token layer while ${ \mathbf { h 
 In our project, ELMo was applied and the task specific weighting of all three layers of representations shown as the equations 1 in  \citet{peters2018deep} (\textit{i.e.} character-convnet output and two LSTM outputs) would be find-tuned.
 
 
-
-\begin{table}[h!]
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|ll}
-\cline{1-4}
-& punctuation marks & PoS tags & named entities &  &  \\ \cline{1-4}
-\begin{tabular}[c]{@{}l@{}}Statistically \\ Significant \\ Features\end{tabular} & \begin{tabular}[c]{@{}l@{}}all punctuation marks \\- (from string.punctuations)\\ commas\\ periods\\ quotation marks\\ question marks\\ other punctuation marks\end{tabular} & \begin{tabular}[c]{@{}l@{}}ADJ: adjective\\ ADP:  adposition\\ ADV:  adverb\\ CCONJ:  coordinating conjunction\\ DET:  determiner\\ NOUN:  noun\\ NUM:  numeral\\ PART:  particle\\ PRON:  pronoun\\ PROPN:  proper noun\\ VERB:  verb\end{tabular} & \begin{tabular}[c]{@{}l@{}}PERSON\\-  People, including fictional. \\ NORP\\-  Nationalities or religious or political groups. \\ ORG\\-  Companies, agencies, institutions, etc. \\ GPE\\-  Countries, cities, states. \\ LOC\\-  Non-GPE locations, mountain ranges, bodies of water. \\ DATE\\-  Absolute or relative dates or periods. \\ CARDINAL\\-  Numerals that do not fall under another type.\end{tabular}                      &  &  \\ \cline{1-4}
-others                                  & exclamation marks                     & \begin{tabular}[c]{@{}l@{}}AUX: auxiliary\\ INTJ: interjection\\ SCONJ: subordinating conjunction\\ SYM: symbol\\ X: other\end{tabular}          & \begin{tabular}[c]{@{}l@{}}FAC\\-  Buildings, airports, highways, bridges, etc.\\ PRODUCT\\-  Objects, vehicles, foods, etc. (Not services.)\\ EVENT\\-  Named hurricanes, battles, wars, sports events, etc.\\ TIME\\-  Times smaller than a day. \\ PERCENT\\-  Percentage, including "\%". \\ MONEY\\-  Monetary values, including unit. \\ QUANTITY\\-  Measurements, as of weight or distance. \\ WORK\_OF\_ART\\-  Titles of books, songs, etc. \\ LAW\\-  Named documents made into laws. \\ LANGUAGE\\-  Any named language.\\ ORDINAL\\-  "first", "second", etc.\end{tabular} &  &  \\ \cline{1-4}
-\end{tabular}%
-}
-\caption{Features for KS tests}
- \label{table:stats-features}
-\end{table}
-
 \subsection{Neural Networks}
 
-The results of \citep{poria2017} indicated that compared to completely distributing word representations, modularized components with specific tasks could improve the overall performance of a CNN model. As we discussed in the previous sections, we have established several characteristics that indicate a Quora question to be insincere; therefore, the idea of combining various components each responsible for detecting different classification clues can be valuable for our project.  Also, SVM classifiers are known to be ideal for processing text data due to the sparse nature of text \citep{medhat2014}. One additional lesson from this study is that their CNN model with a relatively lower feature dimension (at 1,100) outperformed models using larger vector size (>500,000) both in terms of accuracy and computation speed \citep{poria2017}. 
+Based on our review of neural nerworks models in the field of sentiment analysis, we decided to adopt a CNN-LSTM-DNN model as illustrated in figure \ref{figure:nnarchitecture}. 
 
-Among RNN implementations, LSTMs are advantageous because such architecture is easier to train and suffers less from vanishing or exploding gradients. The combination of CNN and RNN networks is also  for the several reasons. First, convolutional layer helped to extract abstract and compact features to be used as inputs to LSTM network \citep{chan2015}, which in turn compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length. Additionally, the convolution layers reduce feature variations so that CNN-LSTM work more efficiently \citep{ghosh2016}.
+Studies have shown that compared to completely distributing word representations, modularized components with specific tasks could improve the overall performance of a CNN model \citep{poria2017}. As we discussed in the previous sections, we have established several characteristics that indicate a Quora question to be insincere; therefore, the idea of combining various components each responsible for detecting different classification clues can be valuable for our project. In our design, the network is generally divided into two components: a baseline CNN-LSTM model taking word vectors as inputs, and extracted syntactic and semantic features from existing libraries. Ideally, we intend to train the baseline model first, and feed the additional features (punctuation marks, named entities, PoS tags, and sentiment scores) one at a time to explore their effects on model performance. 
 
-\begin{figure} 
+Among RNN implementations, LSTMs are advantageous because such architecture is easier to train and suffers less from vanishing or exploding gradients. The combination of CNN and RNN networks is also for the several reasons. First, convolutional layer helped to extract abstract and compact features to be used as inputs to LSTM network \citep{chan2015}, which in turn compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length. Additionally, the convolution layers reduce feature variations so that CNN-LSTM work more efficiently \citep{ghosh2016}.
+
+To combine different components, we plan to feed the output of LSTM layers and the pre-extracted features into a fully connected layer to match the features into a more separable space. Another design is to first feed the extracted features into a fully connected layers, and than concatenate the output of this layer with the output of LSTMs as the input vector for the final fully connected layer. Consider that SVM classifiers are known to be ideal for processing text data due to the sparse nature of text \citep{medhat2014}, we apply SVM on top of the neural network for classification. 
+
+
+\begin{figure}[h!]
 	\includegraphics[height=0.7\textheight, center]{graphs/nn_architecture.png}
-	\caption{Pie charts for proportions of punctuations in positive and negative samples}
+	\caption{Illustration of neural networks architecture}
 	\medskip
 	\small
+	In this figure, the same types of components are shown in the same colours. The blocks with dashed lines correspond to layers that typically appear in a neural networks, but possibly hinder performance according previous studies. We decide to construct a baseline model without these layers, and add them in later to compare the performance if time allows. 
 	\label{figure:nnarchitecture}
 \end{figure}
 \subsection{Evaluating Metrics}
