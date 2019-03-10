@@ -30,6 +30,7 @@
 \usepackage{scalerel}
 \usepackage[export]{adjustbox}
 \usepackage{siunitx}
+\usepackage{subfig}
 
 \graphicspath{ {./pics} }
 \bibliographystyle{plainnat}
@@ -197,8 +198,8 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{graphs/noun_bar.png}
-	\includegraphics[width=0.5\textwidth]{graphs/verb_bar.png}
+	\subfloat[noun]{\includegraphics[width=0.5\textwidth]{graphs/noun_bar.png}}
+	\subfloat[verb]{\includegraphics[width=0.5\textwidth]{graphs/verb_bar.png}}
 	\caption{Bar plots of normalized counts of PoS tags in positive and negative samples}
 	\medskip
 	\small
@@ -208,9 +209,10 @@ To visualize extracted statistical features about punctuation, parts-of-speech t
 
 
 \begin{figure}[ht] 
-	\includegraphics[height=5cm, center]{graphs/verb_box.png}
-	\includegraphics[height=5cm, center]{graphs/noun_box.png}
-	\caption{Boxplot for the distribuition of verbs in positive and negative samples}
+	\centering
+	\subfloat[noun]{\includegraphics[width=0.5\textwidth]{graphs/noun_box.png}}
+	\subfloat[verb]{\includegraphics[width=0.5\textwidth]{graphs/verb_box.png}}
+	\caption{Boxplot for the distribuition of PoS tags in positive and negative samples}
 	\medskip
 	\small
 	\label{figure:verb_box}
