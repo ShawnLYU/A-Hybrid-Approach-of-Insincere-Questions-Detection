@@ -231,6 +231,13 @@ In addition to the statictical data, we also plan to visualize the word embeddin
 \end{figure}
 When designing this program, we implemented each part of the model into modules. As shown in Figure \ref{figure:program_design}, on the one hand, Quora question samples that are in textual form would be firstly embedded into numerical space with ELMo. Then those embedded vectors would be fed into CNN-LSTM. On the other hand, statistics features including PoS-tagging, punctuation marks, named entities, and sentiment scores are computed as well. Then, we append the selected corpus statistics with significant differences to the output tensors of CNN-LSTM. Finally, we apply Support Vector Machine (SVM) to the vector containing features from both word embeddings and corpus statistics. Evaluation metrics would be applied at the end of the experiments.
 
+\subsection{Experiments and Expectations}
+
+Our experiments have two primary goals: one is to investigate the performance of a similar architecture to state-of-art sarcasm detection models on insincerity classification; the other is to explore how pre-extracted corpus-statistical and sentiment features contribute to the classification results. 
+
+Based on the similarities of the linguistic natures of sarcasm and rhetorical questions, we expect that our baseline CNN-LSTM model will achieve good performance on the task because similar models are proven to be successful in sarcasm detection. Once we achieve reasonable results with our baseline model, we will proceed to add different components of the pre-extracted data into the neural network and evaluate their effects on the results. Since information such as sentiment scores directly correlates the indicators of insincere questions, we anticipate that directly feeding such information to the network, instead of relying solely on word embeddings as semantic representation, should improve our model's performance. Without empirical results, it is difficult to predict whether statistical features such as punctuation marks counts augment our model. But consider that the distributions of statistical features we extracted were significantly different in labelled and unlabeled data population, we expect some improvements in the evaluation metrics.
+
+Additionally, to understand the nature of insincere questions, we will rely on the statistical tests and visualization methods described in the previous sections. We will compare and contrast the two populations to analyze what aspects of the text tend to indicate insincerity. 
 
 
 \section{Methodology}
@@ -280,15 +287,6 @@ To combine different components, we plan to feed the output of LSTM layers and t
 In the \num[group-separator={,}]{1044839} training samples, there are \num[group-separator={,}]{980167} samples labeled as sincere while \num[group-separator={,}]{64672} of them are labeled as insincere. Therefore, $accuracy = \frac{ the\ number\ of\ correctly-classified\ samples}{the\ number\ of\ all\ samples}$ is not appropriate for evaluating the model. In this section, targeting at this biased dataset, different evaluation metrics will be discussed and applied.
 
 There are two distinct values of \textit{target} in our dataset: 0 indicates a sincere question while 1 indicates a insincere one. In this project we define samples that are labeled as 1 to be positive while those labeled as 0 to be negative. Hence we could calculate model's precision, recall and F1 score accordingly. Provided that, these statistical metrics could be applied for evaluations.
-
-
-\subsection{Experiments and Expectations}
-
-Our experiments have two primary goals: one is to investigate the performance of a similar architecture to state-of-art sarcasm detection models on insincerity classification; the other is to explore how pre-extracted corpus-statistical and sentiment features contribute to the classification results. 
-
-Based on the similarities of the linguistic natures of sarcasm and rhetorical questions, we expect that our baseline CNN-LSTM model will achieve good performance on the task because similar models are proven to be successful in sarcasm detection. Once we achieve reasonable results with our baseline model, we will proceed to add different components of the pre-extracted data into the neural network and evaluate their effects on the results. Since information such as sentiment scores directly correlates the indicators of insincere questions, we anticipate that directly feeding such information to the network, instead of relying solely on word embeddings as semantic representation, should improve our model's performance. Without empirical results, it is difficult to predict whether statistical features such as punctuation marks counts augment our model. But consider that the distributions of statistical features we extracted were significantly different in labelled and unlabeled data population, we expect some improvements in the evaluation metrics.
-
-Additionally, to understand the nature of insincere questions, we will rely on the statistical tests and visualization methods described in the previous sections. We will compare and contrast the two populations to analyze what aspects of the text tend to indicate insincerity. 
 
 
 
