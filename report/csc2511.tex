@@ -27,10 +27,10 @@
 \usepackage[round]{natbib}
 \usepackage{lscape}
 \usepackage{graphicx}
-
+\usepackage{scalerel}
 \usepackage[export]{adjustbox}
 \usepackage{siunitx}
-\usepackage{indentfirst}
+
 \graphicspath{ {./pics} }
 \bibliographystyle{plainnat}
 %----------------------------------------------------------------------------------------
@@ -289,9 +289,25 @@ In the \num[group-separator={,}]{1044839} training samples, there are \num[group
 
 There are two distinct values of \textit{target} in our dataset: 0 indicates a sincere question while 1 indicates a insincere one. In this project we define samples that are labeled as 1 to be positive while those labeled as 0 to be negative. Hence we could calculate model's precision, recall and F1 score accordingly. Provided that, these statistical metrics could be applied for evaluations.
 
+\subsection{Problem Definition}
 
+Let the dataset be $X = \left \{ X_1, X_2,\cdots, X_N \right \}$ so that $X_i = \left \{ t_1, t_2,\cdots, t_k \right \}$, where $t_i$ is the $i^{th}$ token, $i\in [1,k]$. Besides, we also have $Y={Y_1, Y_2,\cdots,Y_N}$ where $Y_i\in\left\{ 0, 1 \right\}$ so that 1 indicates the sample is labeled as  insincere. Firstly each textual sample would be embedded using both ELMo and corpus statistics (shown as model S) as:
+\begin{align} 
+\begin{split}
+   R_i &= [ELMo1, ELMo2,\cdots,ELMo_k]\\
+   C_i &= S(X_i)
+\end{split}         
+\end{align}
+For model M taking $X_i$ as input, it would compute the output as $\widetilde{Y_i} = M(X_i) = M(R_i, C_i), \widetilde{Y_i} \in \left\{ 0, 1 \right\}$. Therefore, the performance of our model would be evaluated by:
 
-
+\begin{align} 
+\begin{split}
+   Precision(X_i) &= Pr(Y_i=1 \mid \widetilde{Y_i}=1) \\
+   Recall(X_i) &= Pr(\widetilde{Y_i}=1 \mid Y_i=1) \\ 
+   F1 & = 2 * \frac{Precision(X_i) Recall(X_i)}{Precision(X_i) + Recall(X_i)}
+\end{split}         
+\end{align}
+The aim of this project is to use corpus statistics to augment the performance of standard CNN-LSTM for insincerity classification.
 
 
 %------------------------------------------------
