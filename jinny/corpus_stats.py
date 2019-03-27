@@ -7,8 +7,9 @@ from matplotlib import pyplot as plt
 from progress.bar import Bar
 
 # filepath = '../data/mytrain.csv'
+filepath = '../data/filtered_train_data_all.csv'
 # filepath = 'toy_set.csv' # a small set of 2000 questions for testing
-# df_data = pd.read_csv(filepath)
+df_data = pd.read_csv(filepath)
 
 nlp = spacy.load('en_core_web_sm')
 
