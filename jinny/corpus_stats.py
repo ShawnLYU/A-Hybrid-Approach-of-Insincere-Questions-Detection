@@ -5,10 +5,10 @@ import string
 from scipy import stats
 from matplotlib import pyplot as plt
 from progress.bar import Bar
+import sentiment_extraction as se
 
-# filepath = '../data/mytrain.csv'
-filepath = '../data/filtered_train_data_all.csv'
-# filepath = 'toy_set.csv' # a small set of 2000 questions for testing
+dataset='test'
+filepath = '../data/{}.csv'.format(dataset)
 df_data = pd.read_csv(filepath)
 
 nlp = spacy.load('en_core_web_sm')
@@ -84,17 +84,13 @@ def data_collection(dataframe):
 		bar.next()
 	bar.finish()
 
-	# def sum_values(d):
-	# 	# a helper function for summing values for each key in d
-	# 	return {key: sum(d[key]) for key in d.keys()}
-
-	# punc_count = sum_values(punc)
-	# punc_count.pop('all_punctuation') # Remove all_punctuations
-	# pos_count = sum_values(pos)
-
 	for container in data_container:
 		for key, value in container.items():
 			dataframe[key] = pd.Series(value, index=dataframe.index)
+
+	sentiment_df = se.sentence_processing(dataframe)[2]
+	dataframe['sentiment'] = sentiment_df['sentiment']
+	dataframe['polarity'] = sentiment_df['polarity']
 
 def ks_test(set1, set2, theme):
 	""" Conduct KS test to compare set1 and set2. Print the results and return
@@ -119,21 +115,28 @@ def ks_test(set1, set2, theme):
 
 def main():
 	# Getting raw data from data_collection function
+	print(df_data.shape)
 	data_collection(df_data)
 	df_positive, df_negative = df_data[df_data['target']==1], df_data[df_data['target'] == 0]
 
 	# Containers for punctuation marks/PoS/entities counts
 	features = {'punctuation':[PUNCT_DICT.keys(), []], \
-	'pos_tag':[POS_LIST, []], 'ent':[ENT_LIST, []]}
+	'pos_tag':[POS_LIST, []], 'ent':[ENT_LIST, []], 'sentiment':[['sentiment', 'polarity'], []]}
 
 	for key, value in features.items():
 		for label in value[0]:
 			if ks_test(df_positive[label].values, df_negative[label].values, label):
 				value[1].append(label)
+			else:
+				df_data.drop(columns=label)
 		df = df_data[value[1]]
 		df['target'] = df_data['target']
-		filename = '{}.csv'.format(key)
-		df.to_csv(filename, index=0)
+		filename = '{}_{}.csv'.format(dataset, key)
+		df.to_csv(filename)
+
+	df_data.drop(columns=['qid', 'question_text', 'target'])
+	filename = '{}_features.csv'.format(dataset)
+	df_data.to_csv()
 
 	for key, value in features.items():
 		print('{} test results: {}'.format(key, value[1]))

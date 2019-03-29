@@ -38,14 +38,14 @@ def sentence_processing(df):
 	pos_tokens = []
 	neg_tokens = []
 
-	bar = Bar("Collecting data over sentences", max=len(sentences))
+	bar = Bar("Collecting sentiment over sentences", max=len(sentences))
 	for i in range(len(sentences)):
 		sentence = sentences[i]
 		target = targets[i]
-		# sentiment, polarity = sentence_sentiment(sentence)
-		# sentiment_dict['sentiment'].append(sentiment)
-		# sentiment_dict['polarity'].append(polarity)
-		# sentiment_dict['target'].append(target)
+		sentiment, polarity = sentence_sentiment(sentence)
+		sentiment_dict['sentiment'].append(sentiment)
+		sentiment_dict['polarity'].append(polarity)
+		sentiment_dict['target'].append(target)
 
 		wordnet_lemmatizer = WordNetLemmatizer()
 		filtered = stop_word_removal(sentence)
