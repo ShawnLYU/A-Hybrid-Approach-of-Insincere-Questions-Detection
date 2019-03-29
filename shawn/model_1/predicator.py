@@ -82,28 +82,28 @@ train_preds = predictor.predict(train_ds)
 
 np.argmax(train_preds,axis=1)
 
-# tokens = batch["tokens"]
-# labels = batch
-# mask = get_text_field_mask(tokens)
+tokens = batch["tokens"]
+labels = batch
+mask = get_text_field_mask(tokens)
 
-# archive = load_archive('res/model.tar.gz')
-# model = archive.model
-
-
-# config = archive.config.duplicate()
-# dataset_reader_params = config["dataset_reader"]
-# dataset_reader = DatasetReader.from_params(dataset_reader_params)
+archive = load_archive('res/model.tar.gz')
+model = archive.model
 
 
-
-# embeddings = model.word_embeddings(tokens)
-
-
-# state = model.encoder(embeddings, mask)
-# class_logits = model.hidden(state)
-# class_logits
+config = archive.config.duplicate()
+dataset_reader_params = config["dataset_reader"]
+dataset_reader = DatasetReader.from_params(dataset_reader_params)
 
 
 
-# test_preds = predictor.predict(test_ds) 
+embeddings = model.word_embeddings(tokens)
+
+
+state = model.encoder(embeddings, mask)
+class_logits = model.hidden(state)
+class_logits
+
+
+
+test_preds = predictor.predict(test_ds) 
 
