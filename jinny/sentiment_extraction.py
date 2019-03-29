@@ -8,10 +8,10 @@ from nltk.util import ngrams
 import string
 from progress.bar import Bar
 
-filepath = '../data/filtered_train_data_all.csv'
-# filepath = 'toy_set.csv'
+# filepath = '../data/filtered_train_data_all.csv'
+# # filepath = 'toy_set.csv'
 
-df = pd.read_csv(filepath, index_col=0)
+# df = pd.read_csv(filepath, index_col=0)
 
 stopwords = set(stopwords.words('english'))
 punctuation = string.punctuation
@@ -84,4 +84,4 @@ def main():
 	with open('neg_unigram.txt', 'w') as file:
 		file.write(str(neg_unigram))
 
-main()
+# main()
