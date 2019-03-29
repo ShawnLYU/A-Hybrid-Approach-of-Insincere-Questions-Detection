@@ -7,23 +7,17 @@ from matplotlib import pyplot as plt
 from progress.bar import Bar
 import sentiment_extraction as se
 
-dataset='test'
-filepath = '../data/{}.csv'.format(dataset)
-df_data = pd.read_csv(filepath)
 
 nlp = spacy.load('en_core_web_sm')
 
 PUNCT_DICT = {'all_punctuation': string.punctuation, 'commas': ',', \
 'periods': '.', 'quotation_marks': '\'\"', 'question_marks': '?', \
-'exclamation_marks': '!', 'other_punctuations': [s for s in string.punctuation if s not in ',.\'\"?!']}
+ 'other_punctuations': [s for s in string.punctuation if s not in ',.\'\"?!']}
 
-POS_LIST = ['ADJ', 'ADV', 'INTJ', 'NOUN', 'PROPN', 'VERB', 'ADP', 'AUX', \
-'CCONJ', 'DET', 'NUM', 'PART', 'PRON', 'SCONJ', 'SYM', 'X']
+POS_LIST = ['ADJ', 'ADV', 'NOUN', 'PROPN', 'VERB', 'ADP', 'CCONJ', 'DET', 'NUM', 'PART', 'PRON']
 # Reference: https://universaldependencies.org/u/pos/
 
-ENT_LIST = ['PERSON', 'NORP', 'FAC', 'ORG', 'GPE', 'LOC', 'PRODUCT', 'EVENT', \
-'WORK_OF_ART', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY',
-'ORDINAL', 'CARDINAL']
+ENT_LIST = ['PERSON', 'NORP', 'ORG', 'GPE', 'LOC', 'DATE', 'CARDINAL']
 #reference: https://spacy.io/api/annotation#section-named-entities
 
 def build_count_dict(sentence):
@@ -114,6 +108,10 @@ def ks_test(set1, set2, theme):
 	return False
 
 def main():
+	
+	dataset='toy_set'
+	filepath = '../data/{}.csv'.format(dataset)
+	df_data = pd.read_csv(filepath)
 	# Getting raw data from data_collection function
 	print(df_data.shape)
 	data_collection(df_data)
@@ -125,47 +123,21 @@ def main():
 
 	for key, value in features.items():
 		for label in value[0]:
-			if ks_test(df_positive[label].values, df_negative[label].values, label):
-				value[1].append(label)
-			else:
-				df_data.drop(columns=label)
+			# if ks_test(df_positive[label].values, df_negative[label].values, label):
+			value[1].append(label)
+			# else:
+			# 	df_data.drop(columns=label)
 		df = df_data[value[1]]
 		df['target'] = df_data['target']
 		filename = '{}_{}.csv'.format(dataset, key)
 		df.to_csv(filename)
 
-	df_data.drop(columns=['qid', 'question_text', 'target'])
+	df_data = df_data.drop(columns=['qid', 'question_text', 'target'])
 	filename = '{}_features.csv'.format(dataset)
-	df_data.to_csv()
+	df_data.to_csv(filename)
 
-	for key, value in features.items():
-		print('{} test results: {}'.format(key, value[1]))
-
-	# Begin analyzing punctuation 
-	# 1. Distributions of punctuation in positive and negative samples
-	# all_punc_norm_df = pd.DataFrame(data={
-	# 	'positive': pd.Series(pos_punc['all_punctuation']).value_counts(normalize=True), 
-	# 	'negative': pd.Series(neg_punc['all_punctuation']).value_counts(normalize=True)
-	# 	})
-
-	# all_punc_norm_df.plot(kind='bar', title="Punctuation Density Distributions")
-
-	# 2. Distribution of different types of punctuation
-
-	# TODO: Pie plots are not considered as a good data visualization method. 
-	# This is a convenient compromised choice. 
-	# If necessary, consider following alternatives: 
-	# http://www.storytellingwithdata.com/blog/2014/06/alternatives-to-pies
-	# plt.figure('puncpiecharts')
-	# plt.subplot(121, title='Positive Samples')
-	# labels = list(pos_punc_count.keys())
-	# counts = list(pos_punc_count.values())
-	# plt.pie(counts, labels=labels, autopct='%1.1f%%')
-
-	# plt.subplot(122, title='Negative Samples')
-	# labels = list(neg_punc_count.keys())
-	# counts = list(neg_punc_count.values())
-	# plt.pie(counts, labels=labels, autopct='%1.1f%%')
+	# for key, value in features.items():
+	# 	print('{} test results: {}'.format(key, value[1]))
 
 if __name__ == '__main__':
 	main()
