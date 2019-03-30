@@ -26,6 +26,9 @@ from tqdm import tqdm
 from scipy.special import expit # the sigmoid function
 from allennlp.models import Model
 
+from sklearn.metrics import precision_recall_curve
+
+
 import numpy as np
 
 def tonp(tsr): return tsr.detach().cpu().numpy()
@@ -46,11 +49,34 @@ class Predictor:
         pred_generator_tqdm = tqdm(pred_generator,
                                    total=self.iterator.get_num_batches(ds))
         preds = []
+        labels = []
         with torch.no_grad():
             for batch in pred_generator_tqdm:
-                # batch = nn_util.move_to_device(batch, self.cuda_device)
+                labels.append(batch['label'])
                 preds.append(self._extract_data(batch))
-        return np.concatenate(preds, axis=0)
+        # for e in preds[0]:
+        #     print("aaaaaaaaaaaaaa",len(e))    
+        return np.concatenate(labels, axis=0),np.concatenate(preds, axis=0)
+
+
+
+import argparse
+parser = argparse.ArgumentParser(description='Examples: python predicator path/to/file 1.')
+parser.add_argument("path")
+parser.add_argument("model_path")
+parser.add_argument("label")
+args = parser.parse_args()
+predict_label = ''
+if args.label == 1:
+    predict_label = 'train'
+elif args.label == 2:
+    predict_label = 'validation'
+elif args.label == 3:
+    predict_label = 'test'
+
+
+
+
 
 
 
@@ -73,37 +99,63 @@ seq_iterator.index_with(Vocabulary())
 
 Archive_ds = DatasetReader.by_name('quora_text_reader')
 reader = Archive_ds(token_indexers={"elmo": ELMoTokenCharactersIndexer()})
-training_data_path = '/u/shawnlyu/projects/linguistics/workdir/dev_data/filtered_train_data_all.csv'
-train_ds = reader.read(training_data_path)
+data_path = args.path
+train_ds = reader.read(data_path)
 
-
-predictor = Predictor(archive, seq_iterator, cuda_device=0 if USE_GPU else -1)
-train_preds = predictor.predict(train_ds) 
-
-np.argmax(train_preds,axis=1)
-
-tokens = batch["tokens"]
-labels = batch
-mask = get_text_field_mask(tokens)
-
-archive = load_archive('res/model.tar.gz')
+archive = load_archive(args.model_path+'/model.tar.gz')
 model = archive.model
 
+predictor = Predictor(archive, seq_iterator, cuda_device=0 if USE_GPU else -1)
+labels, train_preds = predictor.predict(train_ds) 
 
-config = archive.config.duplicate()
-dataset_reader_params = config["dataset_reader"]
-dataset_reader = DatasetReader.from_params(dataset_reader_params)
-
-
-
-embeddings = model.word_embeddings(tokens)
-
-
-state = model.encoder(embeddings, mask)
-class_logits = model.hidden(state)
-class_logits
+# predictions = np.argmax(train_preds,axis=1)
+# targets = np.argmax(labels,axis=1)
+predictions = np.amax(train_preds,axis=1)
+targets = np.amax(labels,axis=1)
 
 
 
-test_preds = predictor.predict(test_ds) 
+from sklearn.metrics import precision_recall_curve
+import matplotlib
+matplotlib.use('Agg') 
+import matplotlib.pyplot as plt
+from sklearn.utils.fixes import signature
+
+precision, recall, thresholds = precision_recall_curve(y_true=targets,probas_pred=predictions)
+np.savetxt('predictions.csv',np.array(predictions))
+np.savetxt('targets.csv',np.array(targets))
+np.savetxt('precision.csv',np.array(precision))
+np.savetxt('recall.csv',np.array(recall))
+np.savetxt('thresholds.csv',np.array(thresholds))
+
+# In matplotlib < 1.5, plt.fill_between does not have a 'step' argument
+step_kwargs = ({'step': 'post'}
+               if 'step' in signature(plt.fill_between).parameters
+               else {})
+plt.step(recall, precision, color='b', alpha=0.2,
+         where='post')
+plt.fill_between(recall, precision, alpha=0.2, color='b', **step_kwargs)
+
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.ylim([0.0, 1.05])
+plt.xlim([0.0, 1.0])
+plt.title('2-class Precision-Recall curve: AP={0:0.2f}'.format(
+          average_precision))
+plt.savefig('p_r_'+predict_label+'.png')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

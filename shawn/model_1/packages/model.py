@@ -56,23 +56,23 @@ class BaselineModel(Model):
         mask = get_text_field_mask(tokens)
         embeddings = self.word_embeddings(tokens)
         N = embeddings.shape[0]
-        print('embeddings',embeddings.shape)
+        # print('embeddings',embeddings.shape)
         # bi-LSTM
         encoder_after_lstm = self.encoder(embeddings, mask)
-        print('encoder_after_lstm',encoder_after_lstm.shape)
+        # print('encoder_after_lstm',encoder_after_lstm.shape)
         # CNN
         encoder_after_cnn = self.encoder_cnn(encoder_after_lstm.view(N,1,128))
-        print('encoder_after_cnn',encoder_after_cnn.shape)
+        # print('encoder_after_cnn',encoder_after_cnn.shape)
         encoder_after_pooling = self.max_pooling(encoder_after_cnn)
-        print('encoder_after_pooling',encoder_after_pooling.shape)
+        # print('encoder_after_pooling',encoder_after_pooling.shape)
         
         encoder_after_pooling = torch.squeeze(encoder_after_pooling,2)
-        print('reshape',encoder_after_pooling.shape)
+        # print('reshape',encoder_after_pooling.shape)
         # encoder_after_cnn = self.encoder_cnn(encoder_after_lstm, mask)
         # DNN
 
         cls_logits = self.hidden(encoder_after_pooling)
-        print('cls_logits',cls_logits.shape)
+        # print('cls_logits',cls_logits.shape)
         # print(cls_logits)
         # res = self.output(cls_logits)
         # output = {"res": cls_logits, "prediction": np.argmax(cls_logits,axis=0)}
