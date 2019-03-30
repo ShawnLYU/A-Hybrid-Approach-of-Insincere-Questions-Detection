@@ -1,5 +1,7 @@
 label_cols = ['sincere','insincere']
 
-batch_size = 32
-stats_path = '/u/shawnlyu/projects/linguistics/workdir/model_with_stats/stats/sentiment.csv'
+
+stats_path = '/u/shawnlyu/projects/linguistics/workdir/cleaned_data/stats'
 device = 0
+
+stats_dim = 26
