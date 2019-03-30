@@ -23,7 +23,7 @@ from allennlp.training.trainer import Trainer
 from allennlp.predictors import SentenceTaggerPredictor
 
 from myutils import label_cols
-from myutils import batch_size
+
 
 torch.manual_seed(1)
 

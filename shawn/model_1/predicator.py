@@ -33,7 +33,9 @@ import numpy as np
 
 def tonp(tsr): return tsr.detach().cpu().numpy()
  
+
 from allennlp.models.archival import Archive, load_archive
+
 class Predictor:
     def __init__(self, archive: Archive, iterator: DataIterator,
                  cuda_device: int) -> None:
@@ -44,6 +46,7 @@ class Predictor:
         out_dict = self.model(**batch)
         return expit(tonp(out_dict["class_logits"]))
     def predict(self, ds: Iterable[Instance]) -> np.ndarray:
+        self.model = self.model.cuda()
         pred_generator = self.iterator(ds, num_epochs=1, shuffle=False)
         self.model.eval()
         pred_generator_tqdm = tqdm(pred_generator,
@@ -52,16 +55,19 @@ class Predictor:
         labels = []
         with torch.no_grad():
             for batch in pred_generator_tqdm:
-                labels.append(batch['label'])
-                preds.append(self._extract_data(batch))
+              batch = nn_util.move_to_device(batch, self.cuda_device)
+              labels.append(batch['label'].cpu())
+              preds.append(self._extract_data(batch))
         # for e in preds[0]:
-        #     print("aaaaaaaaaaaaaa",len(e))    
+        #     print("aaaaaaaaaaaaaa",len(e))
         return np.concatenate(labels, axis=0),np.concatenate(preds, axis=0)
 
 
 
+
+
 import argparse
-parser = argparse.ArgumentParser(description='Examples: python predicator path/to/file 1.')
+parser = argparse.ArgumentParser(description='Examples: python predicator.py path/to/file path/to/model 1')
 parser.add_argument("path")
 parser.add_argument("model_path")
 parser.add_argument("label")
@@ -103,10 +109,10 @@ data_path = args.path
 train_ds = reader.read(data_path)
 
 archive = load_archive(args.model_path+'/model.tar.gz')
-model = archive.model
+# model = archive.model
 
 predictor = Predictor(archive, seq_iterator, cuda_device=0 if USE_GPU else -1)
-labels, train_preds = predictor.predict(train_ds) 
+labels, train_preds = predictor.predict(train_ds)
 
 # predictions = np.argmax(train_preds,axis=1)
 # targets = np.argmax(labels,axis=1)
@@ -122,6 +128,10 @@ import matplotlib.pyplot as plt
 from sklearn.utils.fixes import signature
 
 precision, recall, thresholds = precision_recall_curve(y_true=targets,probas_pred=predictions)
+from sklearn.metrics import average_precision_score
+average_precision = average_precision_score(targets, predictions)
+
+
 np.savetxt('predictions.csv',np.array(predictions))
 np.savetxt('targets.csv',np.array(targets))
 np.savetxt('precision.csv',np.array(precision))

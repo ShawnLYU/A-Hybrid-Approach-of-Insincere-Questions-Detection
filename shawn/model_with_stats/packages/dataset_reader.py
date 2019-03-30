@@ -26,10 +26,11 @@ class QuoraDatasetReader(DatasetReader):
     @overrides
     def text_to_instance(self, tokens: List[Token],
                          row_id,
+                         tag,
                          labels: np.ndarray=None) -> Instance:
         sentence_field = TextField(tokens, self.token_indexers)
         fields = {"tokens": sentence_field}
-        
+        fields['tag'] = MetadataField(tag)
         fields["token_id"] = MetadataField(row_id)
         if labels is None:
             labels = np.array([0,0])
@@ -43,6 +44,7 @@ class QuoraDatasetReader(DatasetReader):
             yield self.text_to_instance(
                 [Token(x) for x in self.tokenizer(row["question_text"])], # Token is used to initialize a Token object
                 row.name,
+                row.tag,
                 row[label_cols].values,
             )
     def tokenizer(self, x):
