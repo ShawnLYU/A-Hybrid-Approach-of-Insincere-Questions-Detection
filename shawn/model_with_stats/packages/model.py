@@ -25,7 +25,7 @@ from allennlp.predictors import SentenceTaggerPredictor
 
 from myutils import label_cols
 
-from myutils import stats_path
+
 from myutils import device
 from myutils import stats_dim
 
@@ -50,9 +50,7 @@ class BaselineModel(Model):
         self.hidden = torch.nn.Linear(64+stats_dim, len(label_cols))
 
 
-        self.stats_train = pd.read_csv(stats_path+'/train_features.csv',index_col=0)
-        self.stats_valid = pd.read_csv(stats_path+'/validation_features.csv',index_col=0)
-        self.stats_test = pd.read_csv(stats_path+'/test_features.csv',index_col=0)
+
 
         # self.output = torch.nn.Sigmoid()
         # This loss combines a `Sigmoid` layer and the `BCELoss` in one single class
@@ -60,15 +58,12 @@ class BaselineModel(Model):
         self.loss = torch.nn.BCEWithLogitsLoss()
     def forward(self,
                 tokens: Dict[str, torch.Tensor],
-                token_id,
-                tag,
+                stats,
                 label: torch.Tensor = None) -> Dict[str, torch.Tensor]:
         # embeddings
-        # print('token_id',token_id)
         mask = get_text_field_mask(tokens)
         embeddings = self.word_embeddings(tokens)
         N = embeddings.shape[0]
-        print('sentence length of the batch: %d' % N)
         # print('embeddings',embeddings.shape)
         # bi-LSTM
         encoder_after_lstm = self.encoder(embeddings, mask)
@@ -83,14 +78,9 @@ class BaselineModel(Model):
         # print('reshape',encoder_after_pooling.shape)
             
         # concatenate
-        stats_tensor = torch.FloatTensor().to(device)
-        if tag[0] == 'train':
-            stats_tensor = torch.FloatTensor(self.stats_train.loc[token_id].values).to(device)
-        elif tag[0] == 'validation':
-            stats_tensor = torch.FloatTensor(self.stats_valid.loc[token_id].values).to(device)
-        elif tag[0] == 'test':
-            stats_tensor = torch.FloatTensor(self.stats_test.loc[token_id].values).to(device)
-        dense = torch.cat((encoder_after_pooling,stats_tensor),dim=1) # concatenate horizontally
+        # stats_tensor = torch.FloatTensor(stats)
+        # print('stats_tensor',stats_tensor.shape)
+        dense = torch.cat((encoder_after_pooling,stats),dim=1) # concatenate horizontally
         # print('dense',dense.shape)
 
 
