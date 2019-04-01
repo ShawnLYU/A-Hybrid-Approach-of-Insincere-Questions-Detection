@@ -8,6 +8,7 @@ from allennlp.data.tokenizers import Token
 from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
 
 from myutils import label_cols
+from myutils import stats_path
 
 from overrides import overrides
 
@@ -23,6 +24,9 @@ class QuoraDatasetReader(DatasetReader):
                  token_indexers: Dict[str, TokenIndexer] = None) -> None:
         super().__init__(lazy=False)
         self.token_indexers = token_indexers or {"tokens": SingleIdTokenIndexer()}
+        self.stats_train = pd.read_csv(stats_path+'/train_features.csv',index_col=0)
+        self.stats_valid = pd.read_csv(stats_path+'/validation_features.csv',index_col=0)
+        self.stats_test = pd.read_csv(stats_path+'/test_features.csv',index_col=0)
     @overrides
     def text_to_instance(self, tokens: List[Token],
                          row_id,
@@ -30,8 +34,14 @@ class QuoraDatasetReader(DatasetReader):
                          labels: np.ndarray=None) -> Instance:
         sentence_field = TextField(tokens, self.token_indexers)
         fields = {"tokens": sentence_field}
-        fields['tag'] = MetadataField(tag)
-        fields["token_id"] = MetadataField(row_id)
+        if tag == 'train':
+            stats = self.stats_train.loc[row_id].values
+        elif tag == 'valid':
+            stats = self.stats_valid.loc[row_id].values
+        elif tag == 'test':
+            stats = self.stats_test.loc[row_id].values
+
+        fields["stats"] = ArrayField(array=stats)
         if labels is None:
             labels = np.array([0,0])
         label_field = ArrayField(array=labels)

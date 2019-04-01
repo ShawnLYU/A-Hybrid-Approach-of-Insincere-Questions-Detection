@@ -35,13 +35,13 @@
       "type": "cnn",
       "embedding_dim": 1,
       "num_filters":64,
-      "ngram_filter_sizes":[1,2]
+      "ngram_filter_sizes":[2]
 
     }
   },
   "iterator": {
     "type": "basic",
-    "batch_size": 16
+    "batch_size": 32
   },
   "trainer": {
     "optimizer": "adam",
