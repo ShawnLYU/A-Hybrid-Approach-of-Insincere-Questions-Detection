@@ -68,6 +68,7 @@ class BaselineModel(Model):
         mask = get_text_field_mask(tokens)
         embeddings = self.word_embeddings(tokens)
         N = embeddings.shape[0]
+        print('sentence length of the batch: %d' % N)
         # print('embeddings',embeddings.shape)
         # bi-LSTM
         encoder_after_lstm = self.encoder(embeddings, mask)
