@@ -6,6 +6,7 @@ from scipy import stats
 from matplotlib import pyplot as plt
 from progress.bar import Bar
 import sentiment_extraction as se
+import os
 
 
 nlp = spacy.load('en_core_web_sm')
@@ -107,9 +108,9 @@ def ks_test(set1, set2, theme):
 
 	return False
 
-def main():
+def make_files(dataset):
 	
-	dataset='toy_set'
+	print("Currently processing: " + dataset)
 	filepath = '../data/{}.csv'.format(dataset)
 	df_data = pd.read_csv(filepath)
 	# Getting raw data from data_collection function
@@ -129,15 +130,25 @@ def main():
 			# 	df_data.drop(columns=label)
 		df = df_data[value[1]]
 		df['target'] = df_data['target']
-		filename = '{}_{}.csv'.format(dataset, key)
+
+		outdir = './{}_separate/'.format(dataset)
+		if not os.path.exists(outdir):
+			os.mkdir(outdir)
+
+		filename = './{}_separate/{}_{}.csv'.format(dataset, dataset, key)
 		df.to_csv(filename)
 
 	df_data = df_data.drop(columns=['qid', 'question_text', 'target'])
-	filename = '{}_features.csv'.format(dataset)
+	filename = '../extracted_features/{}_features.csv'.format(dataset)
 	df_data.to_csv(filename)
 
 	# for key, value in features.items():
 	# 	print('{} test results: {}'.format(key, value[1]))
+
+def main():
+	sets = ['train', 'validation']
+	for dataset in sets:
+		make_files(dataset)
 
 if __name__ == '__main__':
 	main()
