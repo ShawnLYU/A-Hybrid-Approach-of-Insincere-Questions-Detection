@@ -84,9 +84,42 @@ sen percentage
   
 train(596204, 9), valid(149500, 9), test(261257, 4)
 
+# Final Report TODO list from Jinny (Apr 2nd)
+1. Description of the model
+	- details about the architecture
+	- hyperparameters choices and reasoning (may need a chart)
+	- a more detailed architecture graph to show the dimensions?
 
+2. Corpus stats analysis
+	- visualization
+		- current plots
+		- PCA for feature vector visualization
+		- word vector clustering
+	- textual analysis
+		- compare and contrast features of positive and negative data
+		- a look into the expressive nature of insincere questions
 
+3. NN model analysis
+	- Baseline model
+		- performance report
+		- result analysis: 
+			- why it works 
+			- brief review of the relation to sarcasm detection
+			- limitaion of the current implementation
+			- possible improvements
+	- Adding extracted features
+		- performance report
+		- analysis on the effects of these features
+			- reasoning in general
+			- can we possibly get the features that contributed the most? 
+		- limitation
+		- possible improvements
+	- a brief conclusion
+		- what we have contributed:
+			- transferring approaches from sarcasm detection to insincerity detection
+			- the integration of two different approaches
 
+		
 
 
 
