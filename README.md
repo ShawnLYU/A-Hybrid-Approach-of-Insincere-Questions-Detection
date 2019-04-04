@@ -9,6 +9,10 @@ This project exists thanks to all the people who contribute.
 [Shawn](https://github.com/ShawnLYU)    
 [JinyueF](https://github.com/JinyueF)
 
+## Analysis Notebooks
+1. Feature vector PCA: [pca.ipynb](./jinny/pca.ipynb)
+2. Loss plots: [loss_plots.ipynb](./jinny/loss_plots.ipynb)
+
 ## License
 
 [MIT](LICENSE)
