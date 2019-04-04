@@ -23,6 +23,7 @@ from allennlp.training.trainer import Trainer
 from allennlp.predictors import SentenceTaggerPredictor
 
 from myutils import label_cols
+from myutils import hidden_size
 
 
 torch.manual_seed(1)
@@ -42,7 +43,7 @@ class BaselineModel(Model):
         # self.encoder_cnn = encoder_cnn
         
         self.encoder_cnn = torch.nn.Conv1d(in_channels=1,out_channels=64,kernel_size=2)
-        self.max_pooling = torch.nn.MaxPool1d(kernel_size=127, stride=1, padding=0)
+        self.max_pooling = torch.nn.MaxPool1d(kernel_size=hidden_size-1, stride=1, padding=0)
         self.hidden = torch.nn.Linear(64, len(label_cols))
 
         # self.output = torch.nn.Sigmoid()
@@ -61,7 +62,7 @@ class BaselineModel(Model):
         encoder_after_lstm = self.encoder(embeddings, mask)
         # print('encoder_after_lstm',encoder_after_lstm.shape)
         # CNN
-        encoder_after_cnn = self.encoder_cnn(encoder_after_lstm.view(N,1,128))
+        encoder_after_cnn = self.encoder_cnn(encoder_after_lstm.view(N,1,hidden_size))
         # print('encoder_after_cnn',encoder_after_cnn.shape)
         encoder_after_pooling = self.max_pooling(encoder_after_cnn)
         # print('encoder_after_pooling',encoder_after_pooling.shape)
