@@ -121,7 +121,11 @@ train(596204, 9), valid(149500, 9), test(261257, 4)
 
 		
 
-
+# Experiments
+- basic setups: model1, model_with_stats
+- with no dropouts: model1_nodropout, model_with_stats_nodropout
+- with smaller LSTM hidden size: model1_3_smaller_hidden_size, model_with_stats_3_smaller_hidden_size
+- with different CNN-kernel size:
 
 
 
