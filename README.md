@@ -13,6 +13,7 @@ This project exists thanks to all the people who contribute.
 1. Feature vector PCA: [pca.ipynb](./jinny/pca.ipynb)
 2. Loss plots: [loss_plots.ipynb](./jinny/loss_plots.ipynb)
 3. New sentiment joint plots: [sentiment_plot.ipynb](./jinny/sentiment_plot.ipynb)
+4. Stats plots: [stats_plot.ipynb](./jinny/stats_plot.ipynb)
 
 ## License
 
