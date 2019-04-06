@@ -73,18 +73,18 @@ parser.add_argument("model_path")
 parser.add_argument("label")
 args = parser.parse_args()
 predict_label = ''
-if args.label == 1:
+if args.label == '1':
     predict_label = 'train'
-elif args.label == 2:
+elif args.label == '2':
     predict_label = 'validation'
-elif args.label == 3:
+elif args.label == '3':
     predict_label = 'test'
 
 
 
-
+this_dir = 'accuracy_'+args.model_path.split('/')[-1]+predict_label
 import os
-os.mkdir('accuracy_'+args.model_path.split('/')[-1]+predict_label)
+os.mkdir(this_dir)
 
 
 from packages import model
@@ -114,11 +114,11 @@ archive = load_archive(args.model_path+'/model.tar.gz')
 
 predictor = Predictor(archive, seq_iterator, cuda_device=0 if USE_GPU else -1)
 labels, train_preds = predictor.predict(train_ds)
-
+np.savetxt(this_dir+'/train_preds.csv',np.array(train_preds))
 # predictions = np.argmax(train_preds,axis=1)
 # targets = np.argmax(labels,axis=1)
-predictions = np.amax(train_preds,axis=1)
-targets = np.amax(labels,axis=1)
+predictions = np.array(train_preds)[:,1]
+targets = np.argmax(labels,axis=1)
 
 
 
@@ -133,11 +133,11 @@ from sklearn.metrics import average_precision_score
 average_precision = average_precision_score(targets, predictions)
 
 
-np.savetxt('accuracy/predictions.csv',np.array(predictions))
-np.savetxt('accuracy/targets.csv',np.array(targets))
-np.savetxt('accuracy/precision.csv',np.array(precision))
-np.savetxt('accuracy/recall.csv',np.array(recall))
-np.savetxt('accuracy/thresholds.csv',np.array(thresholds))
+np.savetxt(this_dir+'/predictions.csv',np.array(predictions))
+np.savetxt(this_dir+'/targets.csv',np.array(targets))
+np.savetxt(this_dir+'/precision.csv',np.array(precision))
+np.savetxt(this_dir+'/recall.csv',np.array(recall))
+np.savetxt(this_dir+'/thresholds.csv',np.array(thresholds))
 
 # In matplotlib < 1.5, plt.fill_between does not have a 'step' argument
 step_kwargs = ({'step': 'post'}
@@ -153,7 +153,7 @@ plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 plt.title('2-class Precision-Recall curve: AP={0:0.2f}'.format(
           average_precision))
-plt.savefig('accuracy/p_r_'+predict_label+'.png')
+plt.savefig(this_dir+'/p_r_'+predict_label+'.png')
 
 
 

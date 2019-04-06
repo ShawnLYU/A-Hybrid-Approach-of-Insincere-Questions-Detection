@@ -39,7 +39,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\textbf{A Hybrid Approach to Insincerity Detection}} % Title and subtitle
+\title{\textbf{A Hybrid Approach to Insincere Questions Detection}} % Title and subtitle
 
 \author{\textbf{Mengxuan Lyu, Jinyue Feng} \\ \textit{University of Toronto}} % Author and institution
 
@@ -70,9 +70,15 @@
 %----------------------------------------------------------------------------------------
 \doublespacing % double space
 
+\section{Abstract}
+
+As Q\&A sites become more prevalent, it is critical to detect and reveal patterns of misleading or discriminative questions. In this project, we studied Quora with the focus on questions with non-neutral tone, rhetorical questions, discriminative questions, and questions with sexual contents as shock values. In natural language processing, a lot of research has been conducted over sarcasm, and insincere questions share substantial similarities with it from linguistics interpretations. Therefore,  we transferred and further extend state-of-art approaches of sarcasm detections. In this paper, we proposed a baseline model which is composed of CNN-LSTM and a hybrid model argumented with corpus statistics. Both models utilise ELMo\citep{peters2018deep} as the embedding layer and fine-tuned it within the framework provided by Allennlp\footnote{https://allennlp.org/}. Second, we conducted an in-depth corpus analysis over Quora questions, such as punctuation scores, part-of-speech tagging, named entities, and sentiment scores. Third, we performed evaluations with precision-recall metrics and compare the results with the intended hypothesis. Finally, our hybrid model claimed to outperform the baseline model.
+
+
+
 \section{Introduction}
 
-Despite Quora's policy of \textit{``Be Nice, Be Respectful''}, misleading or discriminative questions of various types still exist. In this project, we will primarily focus on questions with non-neutral tone, rhetorical questions, discriminative questions and questions that use sexual content as shock value. After reviewing sentiment analysis studies, we have found that sarcasm detection is an extensively studied topic in this field. However, there are few studies on the classification of insincere or toxic questions. A closer look at the linguistic backgrounds of sarcasm and insincere questions revealed that these two phenomena share many similarities, which we will discuss in details in section \ref{relations-to-sarcasm}. Therefore, we are motivated to transfer and extend sarcasm detection approaches to our project. 
+Quora is an emergent Q\&A site where people could ask, answer, and edit questions to share knowledges. However, despite Quora's policy of \textit{``Be Nice, Be Respectful''}, misleading or discriminative questions of various types still exist. In this project, we will primarily focus on questions with non-neutral tone, rhetorical questions, discriminative questions and questions that use sexual content as shock value. After reviewing sentiment analysis studies, we have found that sarcasm detection is an extensively studied topic in this field. However, there are few studies on the classification of insincere or toxic questions. A closer look at the linguistic backgrounds of sarcasm and insincere questions revealed that these two phenomena share many similarities, which we will discuss in details in section \ref{relations-to-sarcasm}. Therefore, we are motivated to transfer and extend sarcasm detection approaches to our project. 
 
 The goals of this project are: 
 \begin{enumerate}
@@ -397,6 +403,25 @@ Figure \ref{figure:sentiment_jointplot} shows the joint KDE distribution of pola
 % subsubsection sentiment_scores (end)
 % subsubsection corpus_statistical_insights (end)
 % section experimental_analysis (end)
+
+
+
+
+
+
+\subsection{Discussions}
+extrapolate our findings:
+
+high-level insight:
+
+
+
+We propose the following approaches that may have further improvements:
+1. neural networks for sentiments score
+2. larger size of model (LSTM hidden sizes, multiple CNN filters, multiple layers of DNN)
+3. potentially use SVM at the very last step may have some influences
+
+
 
 %------------------------------------------------
 
