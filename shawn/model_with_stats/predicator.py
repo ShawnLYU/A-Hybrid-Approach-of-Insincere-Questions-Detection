@@ -83,7 +83,8 @@ elif args.label == 3:
 
 
 
-
+import os
+os.mkdir('accuracy_'+args.model_path.split('/')[-1]+predict_label)
 
 
 from packages import model
@@ -132,11 +133,11 @@ from sklearn.metrics import average_precision_score
 average_precision = average_precision_score(targets, predictions)
 
 
-np.savetxt('predictions.csv',np.array(predictions))
-np.savetxt('targets.csv',np.array(targets))
-np.savetxt('precision.csv',np.array(precision))
-np.savetxt('recall.csv',np.array(recall))
-np.savetxt('thresholds.csv',np.array(thresholds))
+np.savetxt('accuracy/predictions.csv',np.array(predictions))
+np.savetxt('accuracy/targets.csv',np.array(targets))
+np.savetxt('accuracy/precision.csv',np.array(precision))
+np.savetxt('accuracy/recall.csv',np.array(recall))
+np.savetxt('accuracy/thresholds.csv',np.array(thresholds))
 
 # In matplotlib < 1.5, plt.fill_between does not have a 'step' argument
 step_kwargs = ({'step': 'post'}
@@ -152,7 +153,7 @@ plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 plt.title('2-class Precision-Recall curve: AP={0:0.2f}'.format(
           average_precision))
-plt.savefig('p_r_'+predict_label+'.png')
+plt.savefig('accuracy/p_r_'+predict_label+'.png')
 
 
 
