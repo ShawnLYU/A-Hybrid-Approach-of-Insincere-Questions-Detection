@@ -129,6 +129,10 @@ train(596204, 9), valid(149500, 9), test(261257, 4)
 
 
 
+# Shorted list of stats features
+- Punctuation: all_punctuation, other_punctuations
+
+- PoS: Pronoun, Verb, CCONJ, NUM, PART
 
 
 
