@@ -31,6 +31,7 @@
 \usepackage[export]{adjustbox}
 \usepackage{siunitx}
 \usepackage{subfig}
+\usepackage{caption}
 
 \graphicspath{ {./pics} }
 \bibliographystyle{plainnat}
@@ -305,7 +306,7 @@ In addition to serving as grammatical structures and the guidance of pauses, pun
 \end{figure}
 
 
-Figure \ref{figure:puncbar} indicated a general t{}endency for insincere questions to contain more than one punctuation marks and figure \ref{figure:puncpie} showed the pattern of insincere questions displaying a more diverse distribution of types of punctuation marks. Combining the information of these two graphs, we conclude that sincere questions were more likely to contain question marks, which indicate an inquisitive tone. On the other hand, insincere questions had higher proportion of commas and periods, possibly because more pauses and descriptions were needed when making a statement compared to asking a questions. The distinctive patterns of punctuation usage were evidence that a feature vector containing punctuation marks counts was meaningful to the classification problem. To help visualize the feature vectors, we performed principal component analysis on $2000 \times 2$ random samples as shown in figure \ref{figure:puncpca}.
+Figure \ref{figure:puncbar} indicated a general tendency for insincere questions to contain more than one punctuation marks and figure \ref{figure:puncpie} showed the pattern of insincere questions displaying a more diverse distribution of types of punctuation marks. Combining the information of these two graphs, we conclude that sincere questions were more likely to contain question marks, which indicate an inquisitive tone. On the other hand, insincere questions had higher proportion of commas and periods, possibly because more pauses and descriptions were needed when making a statement compared to asking a questions. The distinctive patterns of punctuation usage were evidence that a feature vector containing punctuation marks counts was meaningful to the classification problem. To help visualize the feature vectors, we performed principal component analysis on $2000 \times 2$ random samples as shown in figure \ref{figure:puncpca}.
 
 \begin{figure}[ht]
     \includegraphics[width=0.8\textwidth, center]{graphs/pca/2Dpunc.png}
@@ -359,8 +360,7 @@ Among all the named entity count that passed the KS test, NORP (nationalities or
     \label{figure:norp}
 \end{figure}
 
-Consider that the data was sparse, PCA of named entities features (figure \ref{figure:entpca}) expectedly showed less clear distinguishing pattern compared to the previous two types of feature vectors. 
-
+Consider that the data was sparse, PCA of named entities features (figure \ref{figure:entpca}) expectedly showed less distinguishable pattern compared to the previous two types of feature vectors. 
 
 \begin{figure}[!htbp]
     \includegraphics[width=0.8\textwidth, center]{graphs/pca/2Dent.png}
@@ -369,6 +369,32 @@ Consider that the data was sparse, PCA of named entities features (figure \ref{f
 \end{figure}
 
 % subsubsection named_entities (end)
+
+\subsubsection{Sentiment Scores} % (fold)
+\label{ssub:sentiment_scores}
+
+As we have discussed before, sentiment and polarity are important in the detection of insincere questions. Although we mostly relied on the neural networks models to extract semantical information, we still conducted statistical analysis on the sentiment scores to get a more staightforward picture of how sincere and insincere questions differ in terms of sentiments. Expectedly, both sentiment and polarity scores extracted from TextBlob library passed the KS test and were considered significantly different in our experiment setting. 
+
+\begin{figure}[!htbp]
+    \includegraphics[width=0.5\textwidth]{graphs/labeled_sentiment_jointplot.png}
+    \includegraphics[width=0.5\textwidth]{graphs/unlabeled_sentiment_jointplot.png}
+    \medskip
+    \small
+    The curves on the right and top side of each plot are the kernel density estimation. The darker region on the joint plot indicates higher density. The polarity score is a float within the range [-1.0, 1.0]. The subjectivity is a float within the range [0.0, 1.0] where 0.0 is very objective and 1.0 is very subjective.
+
+    \caption{KDE jointplots of sentiment scores for labeled questions (shown in red on the left) and unlabeled questions (shown in blue on the right)}
+    \label{figure:sentiment_jointplot}
+\end{figure}
+
+Figure \ref{figure:sentiment_jointplot} shows the joint KDE distribution of polarity and subjectivity scores in labeled and unlabeled samples. We observed that the unlabeled samples were more concentrated around (0, 0) which indicates a complete neutral tone, whereas the labeled samples showed both higher chances of displaying non-neutral polarity and subjectivity. However, the two populations were unexpectedly similar as shown in figure \ref{sentiment_scatter}. We do not consider this statistical analysis results as contradiction to our hypothesis that sentiments were crucial in insincere question detection. Rather, we believe that it might be too simplistic, and therefore problematic, to represent the sentiment of a question using two scores assigned by an existing library. 
+
+\begin{figure}
+     \includegraphics[width=\textwidth]{graphs/sentiment_scatter.png}
+     \caption{Scatter plot of sentiment scores}
+     \label{sentiment_scatter}
+ \end{figure} 
+
+% subsubsection sentiment_scores (end)
 % subsubsection corpus_statistical_insights (end)
 % section experimental_analysis (end)
 
