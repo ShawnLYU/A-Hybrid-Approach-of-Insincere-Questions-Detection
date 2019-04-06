@@ -158,85 +158,49 @@ Another sarcasm detection study \citep{ghosh2016} presented a CNN-LSTM-DNN neura
 	\caption{Program design}
 	\label{figure:program_design}
 \end{figure}
-When designing this program, we implemented each part of the model into modules. As shown in Figure \ref{figure:program_design}, Quora question samples that are in textual form will be firstly embedded into numerical space with ELMo. Next, these embedded vectors will be fed into a CNN-LSTM network, which serves as our baseline model. Additionally, statistical features including PoS-tags, punctuation marks, named entities, and sentiment scores will be computed using existing libraries. The output of the baseline model and statistical features will then be merged using fully connected layers with dropout. The feature vector computed by the final hidden layer will then be fed to a softmax classifier. Evaluation metrics will be applied at the end of the experiments.
+When designing this program, we implemented each part of the model into modules. As shown in Figure \ref{figure:program_design}, Quora question samples that were in textual form were firstly embedded into numerical space with ELMo. Next, these embedded vectors were fed into a CNN-LSTM network, which served as our baseline model. Additionally, statistical features including PoS-tags, punctuation marks, named entities, and sentiment scores were computed using existing libraries. The output of the baseline model and statistical features were then merged using fully connected layers with dropout. The feature vector computed by the final hidden layer were fed to a softmax classifier. Evaluation metrics were applied at the end of the experiments.
 
 \subsection{Data Preparation} \label{data}
-This project originates from a Kaggle challenge. Kaggle provides a dataset of $1,306,122$ questions with three fields \footnote{https://www.kaggle.com/c/quora-insincere-questions-classification/data}, namely \textit{qid} (a question id), \textit{question\_text} (the content of a question) and \textit{target} (where insincere questions are labeled as 1). 
+This project originated from a Kaggle challenge. Kaggle provided a dataset of $1,306,122$ questions with three fields \footnote{https://www.kaggle.com/c/quora-insincere-questions-classification/data}, namely \textit{qid} (a question id), \textit{question\_text} (the content of a question) and \textit{target} (where insincere questions were labeled as 1). 
 % We will also be using word embeddings including \textit{Word2Vec, GloVe, ELMo} and \textit{BERT}. 
 
-For the entire project, we rely on pandas library for data analysis because of its easiness to use and high performance. Our first step was to divide the dataset into a training set and a testing set in the ratio of 80:20. After a general analysis of the training set, we figured out that most of the questions were around 50 tokens in length, and there were only 22 sentences that were longer than 100 tokens. Thus we removed these 22 sentences to improve training efficiency. These process left us with \num[group-separator={,}]{1044839} training examples. 
+For the entire project, we relied on pandas library for data analysis because of its easiness to use and high performance. After a general analysis of the dataset, we figured out that most of the questions were around 50 tokens in length, and there were only 22 sentences that were longer than 100 tokens. Thus we removed these 22 sentences to improve training efficiency. These process left us with \num[group-separator={,}]{1044839} training examples.  
 
-We purposely did not treat our data with the commonly used stop-word removal step for our analysis except for unigram, because previous studies have shown that stop-word removal in Twitter sentiment analysis tasks could hinder model performance given that the typical stop-word lists were not applicable to Twitter corpus \citep{giachanou2016}. Similarly, stop words in short Quora questions may also serve as useful information for classification. 
+We purposely did not treat our data with the commonly used stop-word removal step for our analysis, because previous studies have shown that stop-word removal in Twitter sentiment analysis tasks could hinder model performance given that the typical stop-word lists were not applicable to Twitter corpus \citep{giachanou2016}. Similarly, stop words in short Quora questions may also serve as useful information for classification. 
 
-Another pre-processing step we conducted was correcting one specific set of noisy data, namely questions involving mathematical formulas. The problem of wrongly labeled mathematical questions in this dataset is a known issue according to the Kaggle discussion forum. Since the presence of mathematical formulas could be a strong indicator of sincere questions, we want our model to accurately capture this information.
+Another pre-processing step we conducted was correcting one specific set of noisy data, namely questions involving mathematical formulas. The problem of wrongly labeled mathematical questions in this dataset was a known issue according to the Kaggle discussion forum. Since the presence of mathematical formulas could be a strong indicator of sincere questions, we wanted our model to accurately capture this information.
+
+After all the preparation steps, we divided the dataset into a training set of 835827 questions, a validation set of 209011 questions, and a testing set of 261257 questions. 
 
 \subsection{Corpus Statistics} \label{corpus-stats}
 
 For corpus statistics analysis, we used Pandas for data handling, spaCy, TextBlob, and NLTK for natural language processing, SciPy for statistical testing, and Matplotlib for plotting. 
 
-In our current setup, we look into the statistical information in three major aspects: punctuation marks, part-of-speech tags, and named entities. Although spaCy PoS-tagger includes PUNCT (punctuation) as one lexical category, we developed our own list of punctuation marks for finer-grained details. The PoS tags used followed the Universal Dependencies scheme \citep{pos-tag}, and the named entities list followed the categorization provided by spaCy Named Entity Recognition model trained on OntoNotes 5 corpus \citep{spacy-named-entity}. For each specific item in these three categories, we first compute the frequencies of an item in all sentences and then conducted the Kolmogorov–Smirnov test (KS test) to compare their distributions in positive and negative samples. Since we used two-tail tests, the p-value threshold for significance is 0.01. All the tested features are listed in Table \ref{table:stats-features}. For all the significant features, we also generated boxplots, bar plots, and kernel density estimation graphs to visualize the distributions. 
+We looked into the statistical information in four major aspects: punctuation marks, part-of-speech tags, named entities, and sentiment scores. Although spaCy PoS-tagger includes PUNCT (punctuation) as one lexical category, we developed our own list of punctuation marks for finer-grained details. The PoS tags used followed the Universal Dependencies scheme \citep{pos-tag}, and the named entities list followed the categorization provided by spaCy Named Entity Recognition model trained on OntoNotes 5 corpus \citep{spacy-named-entity}. For each specific item in these categories except for sentiment scores, we computed the frequencies of an item in each sentence. For sentiment scores, we directly used TextBlob library. After collecting the statistics, we conducted the Kolmogorov–Smirnov test (KS test) to compare their distributions in positive and negative samples. Since we used two-tail tests, the p-value threshold for significance is 0.01. All the tested features are listed in Table \ref{table:stats-features}. For all the significant features, we also generated a series of graphs to visualize the distributions. 
 
-Using the KS test for discrete distributions is a compromised choice because the test is less powerful if the distributions are not continuous. The large sample size is also problematic as it reduces the power of significance testing. At this point, we use this test as a coarse filtering process. One benefit of this approach is that the conservative reduction of the number of features allows us to conduct more comprehensive corpus statistics analysis. In later steps, we will incorporate more feature selection methods to further reduce feature dimensions if necessary. 
-
-Another feature that we intend to add to our analysis is the sentiment measurements from TextBlob library. We believe that directly feeding sentiment information to our model would be beneficial because a non-neutral tone is one of the main indicators of insincere questions. 
+Using the KS test for discrete distributions was a compromised choice because the test was less powerful if the distributions were not continuous. The large sample size was also problematic as it reduced the power of significance testing. However, one benefit of this approach was that the conservative reduction of the number of features allowed us to conduct more comprehensive corpus statistics analysis.
 
 \begin{table}[ht!]
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|ll}
-\cline{1-4}
-& punctuation marks & PoS tags & named entities &  &  \\ \cline{1-4}
-\begin{tabular}[c]{@{}l@{}}Statistically \\ Significant \\ Features\end{tabular} & \begin{tabular}[c]{@{}l@{}}all punctuation marks \\- (from string.punctuations)\\ commas\\ periods\\ quotation marks\\ question marks\\ other punctuation marks\end{tabular} & \begin{tabular}[c]{@{}l@{}}ADJ: adjective\\ ADP:  adposition\\ ADV:  adverb\\ CCONJ:  coordinating conjunction\\ DET:  determiner\\ NOUN:  noun\\ NUM:  numeral\\ PART:  particle\\ PRON:  pronoun\\ PROPN:  proper noun\\ VERB:  verb\end{tabular} & \begin{tabular}[c]{@{}l@{}}PERSON\\-  People, including fictional. \\ NORP\\-  Nationalities or religious or political groups. \\ ORG\\-  Companies, agencies, institutions, etc. \\ GPE\\-  Countries, cities, states. \\ LOC\\-  Non-GPE locations, mountain ranges, bodies of water. \\ DATE\\-  Absolute or relative dates or periods. \\ CARDINAL\\-  Numerals that do not fall under another type.\end{tabular}                      &  &  \\ \cline{1-4}
-others                                  & exclamation marks                     & \begin{tabular}[c]{@{}l@{}}AUX: auxiliary\\ INTJ: interjection\\ SCONJ: subordinating conjunction\\ SYM: symbol\\ X: other\end{tabular}          & \begin{tabular}[c]{@{}l@{}}FAC\\-  Buildings, airports, highways, bridges, etc.\\ PRODUCT\\-  Objects, vehicles, foods, etc. (Not services.)\\ EVENT\\-  Named hurricanes, battles, wars, sports events, etc.\\ TIME\\-  Times smaller than a day. \\ PERCENT\\-  Percentage, including "\%". \\ MONEY\\-  Monetary values, including unit. \\ QUANTITY\\-  Measurements, as of weight or distance. \\ WORK\_OF\_ART\\-  Titles of books, songs, etc. \\ LAW\\-  Named documents made into laws. \\ LANGUAGE\\-  Any named language.\\ ORDINAL\\-  "first", "second", etc.\end{tabular} &  &  \\ \cline{1-4}
+\begin{tabular}{|l|l|l|l|l|l}
+\cline{1-5}
+& punctuation marks & PoS tags & named entities & sentiment &  \\ \cline{1-5}
+\begin{tabular}[c]{@{}l@{}}Statistically \\ Significant \\ Features\end{tabular} & \begin{tabular}[c]{@{}l@{}}all punctuation marks \\- (from string.punctuations)\\ commas\\ periods\\ quotation marks\\ question marks\\ other punctuation marks\end{tabular} & \begin{tabular}[c]{@{}l@{}}ADJ: adjective\\ ADP:  adposition\\ ADV:  adverb\\ CCONJ:  coordinating conjunction\\ DET:  determiner\\ NOUN:  noun\\ NUM:  numeral\\ PART:  particle\\ PRON:  pronoun\\ PROPN:  proper noun\\ VERB:  verb\end{tabular} & \begin{tabular}[c]{@{}l@{}}PERSON\\-  People, including fictional. \\ NORP\\-  Nationalities or religious or political groups. \\ ORG\\-  Companies, agencies, institutions, etc. \\ GPE\\-  Countries, cities, states. \\ LOC\\-  Non-GPE locations, mountain ranges, bodies of water. \\ DATE\\-  Absolute or relative dates or periods. \\ CARDINAL\\-  Numerals that do not fall under another type.\end{tabular}                      & \begin{tabular}[c]{@{}l@{}}sentiment \\ polarity\end{tabular} &  \\ \cline{1-5}
+others                                  & exclamation marks                     & \begin{tabular}[c]{@{}l@{}}AUX: auxiliary\\ INTJ: interjection\\ SCONJ: subordinating conjunction\\ SYM: symbol\\ X: other\end{tabular}          & \begin{tabular}[c]{@{}l@{}}FAC\\-  Buildings, airports, highways, bridges, etc.\\ PRODUCT\\-  Objects, vehicles, foods, etc. (Not services.)\\ EVENT\\-  Named hurricanes, battles, wars, sports events, etc.\\ TIME\\-  Times smaller than a day. \\ PERCENT\\-  Percentage, including "\%". \\ MONEY\\-  Monetary values, including unit. \\ QUANTITY\\-  Measurements, as of weight or distance. \\ WORK\_OF\_ART\\-  Titles of books, songs, etc. \\ LAW\\-  Named documents made into laws. \\ LANGUAGE\\-  Any named language.\\ ORDINAL\\-  "first", "second", etc.\end{tabular} &  &  \\ \cline{1-5}
 \end{tabular}%
 }
 \caption{Features for KS tests}
  \label{table:stats-features}
 \end{table}
 
-
-To visualize extracted statistical features about punctuation, parts-of-speech tag, and named entities at corpus level, we created bar plots for the counts of the occurrences over the entire corpus. To visualize the distributions at the sentence level, we used boxplots. For certain features of which the distributions are extremely skewed, our visualization methods may not provide the best representation. We have tried to use different types of plots to complement each other to partially solve this problem. For example, we created a pie chart for punctuation marks to show the relative distribution in one sample population. Among the three aspects, the graphs showing the distributions of parts-of-speech tags are the most informative. As we are still refining these visualization techniques, here we only present some examples (Figure \ref{figure:pos_bar}, Figure \ref{figure:verb_box}, Figure \ref{figure:puncpie}) to show our progress. 
-
-\begin{figure}[ht]
-	\centering
-	\subfloat[noun]{\includegraphics[width=0.5\textwidth]{graphs/noun_bar.png}}
-	\subfloat[verb]{\includegraphics[width=0.5\textwidth]{graphs/verb_bar.png}}
-	\caption{Bar plots of normalized counts of PoS tags in positive and negative samples}
-	\medskip
-	\small
-	Positive sentences are labeled as insincere. The y-axis is the normalized counts and x-axis is the number of occurrences of a pos tag in a sentence. 
-	\label{figure:pos_bar}
-\end{figure}
-
-
-\begin{figure}[ht] 
-	\centering
-	\subfloat[noun]{\includegraphics[width=0.5\textwidth]{graphs/noun_box.png}}
-	\subfloat[verb]{\includegraphics[width=0.5\textwidth]{graphs/verb_box.png}}
-	\caption{Boxplot for the distribuition of PoS tags in positive and negative samples}
-	\medskip
-	\small
-	\label{figure:verb_box}
-
-\end{figure}
-
-
-\begin{figure}[ht] 
-	\includegraphics[width=\textwidth, center]{graphs/puncpiecharts.png}
-	\caption{Pie charts for proportions of punctuations in positive and negative samples}
-	\medskip
-	\small
-	\label{figure:puncpie}
-\end{figure}
-
-In addition to the statistical data, we also plan to visualize the word embeddings of labeled and unlabeled sentences. Consider the size of our corpus, we will first extract the most frequent unigrams, and visualize the corresponding word vectors using appropriate methods such as t-SNE plots. 
-
+To visualize extracted statistical features about punctuation, parts-of-speech tag, and named entities at corpus level, we created bar plots for the counts of the occurrences over the entire corpus. To visualize the distributions at the sentence level, we used boxplots. For certain features of which the distributions are extremely skewed, our visualization methods may not provide the best representation. Therefore we incorporated different types of plots to complement each other to partially solve this problem. For example, we created a pie chart for punctuation marks to show the relative distribution in one sample population, and joint KDE plots for sentiment scores. 
 
 
 \subsection{Experiments and Expectations}
 
 Our experiments contain two primary goals: one is to investigate the performance of a similar architecture to state-of-art sarcasm detection models on insincerity classification; the other is to explore how pre-extracted corpus-statistical and sentiment features contribute to the classification results. 
 
-Based on the similarities of the linguistic natures of sarcasm and rhetorical questions, we expect that our baseline CNN-LSTM model will achieve good performance on the task because similar models are proven to be successful in sarcasm detection. Once we achieve reasonable results with our baseline model, we will proceed to add different components of the pre-extracted data into the neural network and evaluate their effects on the results. Since information such as sentiment scores directly correlates with the indicators of insincere questions, we anticipate that directly feeding such information to the network, instead of relying on word embeddings as semantic representation, should improve our model's performance. Without empirical results, it is difficult to predict whether statistical features such as punctuation marks counts will augment our model. But consider that the distributions of extracted statistical features were significantly different in labeled and unlabeled data population, we expect some improvements in the evaluation metrics.
+Based on the similarities of the linguistic natures of sarcasm and rhetorical questions, we expected that our baseline CNN-LSTM model will achieve good performance on the task because similar models are proven to be successful in sarcasm detection. Once we achieve reasonable results with our baseline model, we will proceed to add different components of the pre-extracted data into the neural network and evaluate their effects on the results. Since information such as sentiment scores directly correlates with the indicators of insincere questions, we anticipate that directly feeding such information to the network, instead of relying on word embeddings as semantic representation, should improve our model's performance. Without empirical results, it is difficult to predict whether statistical features such as punctuation marks counts will augment our model. But consider that the distributions of extracted statistical features were significantly different in labeled and unlabeled data population, we expect some improvements in the evaluation metrics.
 
 Additionally, to understand the nature of insincere questions, we will use the statistical tests and visualization methods described in the previous sections to conduct the analysis. We will compare and contrast the two populations to identify what aspects of the text tend to indicate insincerity. 
 
@@ -302,26 +266,168 @@ Among RNN implementations, LSTMs are advantageous because such architecture is e
 
 To combine different components, we plan to feed the output of LSTM layers and the pre-extracted features into a fully connected layer to match the features into a more separable space. Another design is to first feed the extracted features into a fully connected layer, and then concatenate the output of this layer with the output of LSTMs as the input vector for the final fully connected layer. We will then use softmax for classification and compute cross-entropy as the loss function. 
 
-
-
 \subsection{Evaluating Metrics}
 
 In the \num[group-separator={,}]{1044839} training samples, there are \num[group-separator={,}]{980167} samples labeled as sincere while \num[group-separator={,}]{64672} of them are labeled as insincere. Therefore, $accuracy = \frac{ the\ number\ of\ correctly-classified\ samples}{the\ number\ of\ all\ samples}$ is not appropriate for evaluating the model. In this section, targeting at this biased dataset, different evaluation metrics will be discussed and applied.
 
 There are two distinct values of \textit{target} in our dataset: 0 indicates a sincere question while 1 indicates an insincere one. In this project, we define samples that are labeled as 1 to be positive while those labeled as 0 to be negative. Hence we could calculate our model's precision, recall, and F1 score accordingly. Provided that, these statistical metrics could be applied for evaluations.
 
+\section{Experimental Analysis} % (fold)
+\label{sec:experimental_analysis}
 
+\subsection{Corpus-statistical Insights} % (fold)
+\label{ssub:corpus_statistical_insights}
+
+To investigate the nature of insincere questions from a statistical perspective, we will start our discussion by looking into the corpus statistics experiment results. Although the ground-truth labels contained noises, we refer to labeled questions as ``insincere questions'' or ``positive samples'' and unlabeled questions as ``sincere questions'' or ``negative samples'' in the following discussion. 
+
+\subsubsection{Punctuation Marks} % (fold)
+\label{ssub:punctuation_marks}
+
+In addition to serving as grammatical structures and the guidance of pauses, punctuation marks convey information about emphasis on specific content and reflect people's psychological states \citep{thorndike1948punc}. In accordance to our hypothesis, the usage of punctuation was significantly different between sincere questions and insincere questions. 
+
+\begin{figure}[ht]
+    \includegraphics[width=0.6\textwidth, center]{graphs/bar_punc/1.png}
+    % \includegraphics[width=0.5\textwidth]{graphs/bar_punc/2.png}
+    % \includegraphics[width=0.5\textwidth]{graphs/bar_punc/3.png}
+    % \includegraphics[width=0.5\textwidth]{graphs/bar_punc/4.png}
+    % \includegraphics[width=0.5\textwidth]{graphs/bar_punc/5.png}
+    % \includegraphics[width=0.5\textwidth]{graphs/bar_punc/6.png}
+    \caption{Bar plot of punctuation marks distribution in positive and negative samples}
+    \label{figure:puncbar}
+\end{figure}
+
+\begin{figure}[ht] 
+    \includegraphics[width=\textwidth, center]{graphs/puncpiecharts.png}
+    \caption{Pie charts for proportions of punctuations in positive and negative samples}
+    \medskip
+    \small
+    \label{figure:puncpie}
+\end{figure}
+
+
+Figure \ref{figure:puncbar} indicated a general t{}endency for insincere questions to contain more than one punctuation marks and figure \ref{figure:puncpie} showed the pattern of insincere questions displaying a more diverse distribution of types of punctuation marks. Combining the information of these two graphs, we conclude that sincere questions were more likely to contain question marks, which indicate an inquisitive tone. On the other hand, insincere questions had higher proportion of commas and periods, possibly because more pauses and descriptions were needed when making a statement compared to asking a questions. The distinctive patterns of punctuation usage were evidence that a feature vector containing punctuation marks counts was meaningful to the classification problem. To help visualize the feature vectors, we performed principal component analysis on $2000 \times 2$ random samples as shown in figure \ref{figure:puncpca}.
+
+\begin{figure}[ht]
+    \includegraphics[width=0.8\textwidth, center]{graphs/pca/2Dpunc.png}
+    
+    \medskip
+    \small
+    \caption{PCA of punctuation features} 
+    \label{figure:puncpca}
+\end{figure}
+
+% subsubsection punctuation_marks (end)
+
+\subsubsection{Parts of Speech Tags} % (fold)
+\label{ssub:parts_of_speech_tags}
+
+Parts of speech counts are widely used as features in sentiment analysis tasks \citep{medhat2014} and have shown positive contribution to sarcasm detection \citep{barbosa2010}. In our study, parts of speech tags clearly beared discriminative power. 
+
+Based on an examination of PoS tags distribution at both corpus level (see plots in Appendix \ref{sec:appendix_a_bar_plots_of_pos_distribution_at_corpus_level}) and sentence level (see plots in Appendix \ref{sec:appendix_b}), we discovered the following patterns: 
+
+\begin{enumerate}
+    \item For most types of tags, including adjective and adverbs, each sincere question tended to contain less than two occurrances, whereas insincere questions were more likely to show higher counts. In other words, PoS tags showed more compact distributions in negative samples. 
+    \item The presence of adjective, adverbs, proper nouns seemed to be the strongest indicators of insincerity. This was expected because both adjectives and adverbs were sentiment-bearing, and proper nouns were suggestive of certain themes that frequently appeared in insincere questions. 
+    \item Numbers seemed to be more associated with sincere questions possibly because of the relation of numbers to facts and math-related questions. 
+\end{enumerate}
+
+PCA of PoS-tags feature vectors is shown in figure \ref{figure:pospca}. Consistent with our analysis above, the data points of sincere questions were much more concentrated than those of insincere quetions.  
+
+\begin{figure}[ht]
+    \includegraphics[width=0.8\textwidth, center]{graphs/pca/2Dpos.png}
+    
+    \medskip
+    \small
+    \caption{PCA of PoS features} 
+    \label{figure:pospca}
+\end{figure}
+
+% subsubsection parts_of_speech_tags (end)
+
+\subsubsection{Named Entities} % (fold)
+\label{ssub:named_entities}
+
+Compared to punctuation marks and PoS tags, the distributions of named entities were much more sparse. Therefore, the statistical plots of named entity count were less informative. However, we consider named entities as valuable information for the classification problem because named entities may associate with certain topics that are frequently mentioned in insincere questions. For example, "Trump" was the 9th most frequent unigram with 5212 occurrances in the 64671 labeled questions. 
+
+Among all the named entity count that passed the KS test, NORP (nationalities or religious or political groups) counts showed the highest level of distinction between the two sample populations (figure \ref{figure:norp}). As we described in the introduction, one major type of insincere questions were questions that were discriminative against a group of people. NORP counts partially captured this information. 
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{graphs/bar_norp.png}
+    \includegraphics[width=0.3\textwidth]{graphs/norp_box.png}
+    \caption{NORP distributions in positive and negative samples}
+    \label{figure:norp}
+\end{figure}
+
+Consider that the data was sparse, PCA of named entities features (figure \ref{figure:entpca}) expectedly showed less clear distinguishing pattern compared to the previous two types of feature vectors. 
+
+
+\begin{figure}[!htbp]
+    \includegraphics[width=0.8\textwidth, center]{graphs/pca/2Dent.png}
+    \caption{PCA of named entities features} 
+    \label{figure:entpca}
+\end{figure}
+
+% subsubsection named_entities (end)
+% subsubsection corpus_statistical_insights (end)
+% section experimental_analysis (end)
 
 %------------------------------------------------
 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
-\newpage
+\clearpage
+
 \bibliographystyle{unsrt}
 
 \bibliography{csc2511.bib}
 
 %----------------------------------------------------------------------------------------
+
+%  APPENDIX
+\newpage
+\appendix
+\section{Bar plots of PoS Distribution at Corpus Level} % (fold)
+\label{sec:appendix_a_bar_plots_of_pos_distribution_at_corpus_level}
+    \begin{figure}[h!]
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/1.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/2.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/3.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/4.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/5.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/6.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/7.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/8.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/9.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/10.png}
+    \includegraphics[width=0.5\textwidth]{graphs/bar_pos/11.png}
+
+    \caption{Bar plot of PoS distribution in positive and negative samples}
+    
+\end{figure}
+
+\section{Boxplots of PoS Distribution at Sentence Level} % (fold)
+\label{sec:appendix_b}
+    \begin{figure}[h!]
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/1.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/2.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/3.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/4.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/5.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/6.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/7.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/8.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/9.png}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/10.png} \hspace{0.033\textwidth}
+    \includegraphics[width=0.3\textwidth]{graphs/box_pos/11.png}
+
+    \caption{Boxplot of PoS distribution in positive and negative samples}
+    
+\end{figure}
+
+
+% section appendix_a_bar_plots_of_pos_distribution_at_corpus_level (end)
+
 
 \end{document}
