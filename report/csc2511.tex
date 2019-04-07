@@ -160,7 +160,9 @@ Another sarcasm detection study \citep{ghosh2016} presented a CNN-LSTM-DNN neura
 
 \section{Experimental Setup}
 
-\subsection{Overview}
+\subsection{Overview}\footnote{
+	Due to the limitations over computational resources and time, we randomly select 1/8 out of more than one million samples. 
+}
 \begin{figure}[ht]
 	\includegraphics[width=0.6\textheight, center]{graphs/program_desi_flow.png}
 	\caption{Program design}
@@ -455,18 +457,26 @@ We focused our experiments on the goal of comparing the effects of different com
 
 
 \subsection{Discussions}
+
+
 Extrapolate our findings:
 
 
 
-high-level insight:
+High-level insight:
+
+Despite the limitations on the computational resources and time, we have achieved reasonable results and provided in-depth analysis, including the comparisons of different models and the performances of each experiments as well.
 
 
 
 We propose the following approaches that may have further improvements:
-1. neural networks for sentiments score
-2. larger size of model (LSTM hidden sizes, multiple CNN filters, multiple layers of DNN)
-3. potentially use SVM at the very last step may have some influences
+
+
+1. Model complexity and dataset
+
+In this project, due to limitations on computation resources and time as well, we randomly partitioned and trained the models over only 1/8 of \num[group-separator={,}]{1044839} data. Besides, we did not fully explore the complexity of the model. Precisely, our models are simply composed of two layers of Bi-LSTM and one layer of CNN, therefore deeper neural networks and the full dataset should produce better performance.
+
+
 
 
 
