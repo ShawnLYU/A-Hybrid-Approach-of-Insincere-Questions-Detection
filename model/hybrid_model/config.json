@@ -7,10 +7,8 @@
       }
     }
   },
-  // "train_data_path": "/u/shawnlyu/projects/linguistics/workdir/dev_data/train.dev.csv",
-  // "validation_data_path": "/u/shawnlyu/projects/linguistics/workdir/dev_data/train.dev.csv",
-  "train_data_path": "/u/shawnlyu/projects/linguistics/workdir/cleaned_data/train.csv",
-  "validation_data_path": "/u/shawnlyu/projects/linguistics/workdir/cleaned_data/valid.csv",
+  "train_data_path": "train_0125.csv",
+  "validation_data_path": "valid_0125.csv",
   "model": {
     "type": "quora_insincere_classification",
     "text_field_embedder": {
