@@ -164,6 +164,66 @@ plt.savefig(this_dir+'/p_r_'+predict_label+'.png')
 
 
 
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model1_1 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model1_1 3
+
+
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model1_2_nodropout 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model1_2_nodropout 3
+
+
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model1_3_smaller_hidden_size 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model1_3_smaller_hidden_size 3
+
+
+
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model1_5_larger_filter_size 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model1_5_larger_filter_size 3
+
+
+
+
+
+
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model_with_stats_1 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model_with_stats_1 3
+
+
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model_with_stats_2_nodropout 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model_with_stats_2_nodropout 3
+
+
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model_with_stats_3_smaller_hidden_size 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model_with_stats_3_smaller_hidden_size 3
+
+
+# python predicator.py ../cleaned_data/train_0125.csv ../result/model_with_stats_5_larger_filter_size 1
+# python predicator.py ../cleaned_data/test_0125_modified.csv ../result/model_with_stats_5_larger_filter_size 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
