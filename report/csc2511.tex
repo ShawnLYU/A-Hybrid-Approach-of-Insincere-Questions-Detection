@@ -270,9 +270,11 @@ Based on our review of neural network models in the field of sentiment analysis,
 
 Studies have shown that compared to completely distributing word representations, modularized components with specific tasks could improve the overall performance of a CNN model \citep{poria2017}. As we discussed in the previous sections, we have established several characteristics that indicate a Quora question to be insincere; therefore, the idea of combining various components each responsible for detecting different classification clues can be valuable for our project. In our design, the network is generally divided into two components: a baseline CNN-LSTM model taking word vectors as inputs and extracted syntactic and semantic features from existing libraries. Ideally, we will train the baseline model first, and feed the additional features (punctuation marks, named entities, PoS tags, and sentiment scores) one at a time to explore their effects on model performance. 
 
-Among RNN implementations, LSTMs are advantageous because such architecture is easier to train and suffers less from vanishing or exploding gradients. The combination of CNN and RNN networks is also beneficial for several reasons. First, convolutional layers help to extract abstract and compact features to be used as inputs to LSTM network \citep{chan2015}, which in turn compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length. Additionally, the convolution layers reduce feature variations so that CNN-LSTM work more efficiently \citep{ghosh2016}.
+Among RNN implementations, LSTMs are advantageous because such architecture is easier to train and suffers less from vanishing or exploding gradients. The combination of CNN and RNN networks is also beneficial for several reasons. First, convolutional layers help to extract abstract and compact features to be used as inputs to LSTM network \citep{chan2015}, which in turn compensates for the disadvantage of fixed filter width of convolutional layers, allowing for better analysis of long-distance relationships over texts with various length. Additionally, the convolution layers reduce feature variations so that CNN-LSTM work more efficiently \citep{ghosh2016}. 
 
-To combine different components, we plan to feed the output of LSTM layers and the pre-extracted features into a fully connected layer to match the features into a more separable space. Another design is to first feed the extracted features into a fully connected layer, and then concatenate the output of this layer with the output of LSTMs as the input vector for the final fully connected layer. We will then use softmax for classification and compute cross-entropy as the loss function. 
+To combine different components, we plan to feed the output of CNN layers and the pre-extracted features into a fully connected layer to match the features into a more separable space. We will then use softmax for classification and compute cross-entropy as the loss function. 
+
+In this case, we designed our models as following: in the baseline model, each question text would be firstly embedded by ELMo, followed by a Bi-LSTM and CNN. With global max-pooling applied, the outputs would be fed into a fully connected layer and the loss would be calculated accordingly. In the hybrid model, statistical information would be appended to the outputs of CNN, so that the concatenated vector would be fed into the following fully connected layer.
 
 \subsection{Evaluating Metrics}
 
@@ -453,7 +455,9 @@ We focused our experiments on the goal of comparing the effects of different com
 
 
 \subsection{Discussions}
-extrapolate our findings:
+Extrapolate our findings:
+
+
 
 high-level insight:
 
