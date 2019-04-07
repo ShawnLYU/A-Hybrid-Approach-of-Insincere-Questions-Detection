@@ -1,6 +1,4 @@
-# Project Title
-
-A Hybrid Approach to Insincere Questions Detection
+# A Hybrid Approach to Insincere Questions Detection
 
 Detailed report could be found at _[A Hybrid Approach to Insincere Questions Detection](https://github.com/ShawnLYU/Quora-Insincere-Questions-Classification/blob/master/report/csc2511.pdf)_.
 
