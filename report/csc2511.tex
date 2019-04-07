@@ -451,13 +451,18 @@ We focused our experiments on the goal of comparing the effects of different com
     \label{table:AP}
 \end{table}
 
-We conducted three different experiments to test the effects of hyperparameters on the two models to get a better comprehension of how they differ. In general, models with statistical features performed better than baseline models. Since we restricted our sample sizes and numbers of epochs to accommodate for the limited computational resources, we expected a further expansion on model complexity to result in better performance. In addition, the labels of our data were imbalanced and contained noises, therefore the prediction results might not serve as ideal measurements of our models. In the following sections, we will also examine validation losses to compare models in different experiments. 
+We conducted three different experiments to test the effects of hyperparameters on the two models to get a better comprehension of how they differ. In general, models with statistical features performed better than baseline models. Since we restricted our sample sizes and numbers of epochs to accommodate for the limited computational resources, we expected a further expansion on model and dataset complexity to result in better performance. In addition, the labels of our data were imbalanced and contained noises. These conditions could have restrained the upper limit of prediction accuracy. For the purposes of our project, we treat the testing precision of 0.59 as the standard of a well-performing model. 
 
+Interestingly, the models with statistical features all achieved the best performance regardless of the modificaitons to the baseline model. We inferred that statistical features significantly contributed to the classification process so that it offered overall model performance stability against changes to the baseline model. This result matched our hypothesis that features with explicit meanings could contribute to a relatively uninterpretable neural networks model. Additionally, our observations were consistent with \citet{poria2017}'s conclusion that parallel pre-trained models that extracted different information improved the performance of a sarcasm detection CNN model. 
 
-\subsubsection{Effect of Dropout} % (fold)
-\label{ssub:effect_of_dropout}
+As we have described in section \ref{ssub:corpus_statistical_insights}, some statistical features beared more interpretable meanings than others. Therefore we selected a subset of these features to feed into the final classifier. The model took more than double the time to train, but the final evaluation metrics were almost identical to the model with a larger feature dimension. We found that a smaller subset of statistical features contributed sufficient information for the model to achieve a good performance; however, a wider range of statistical features helped the model to converge faster. 
 
-Dropout layers have been shown to decrease model performance on sarcasm detection \citep{ghosh2016}. In our experiment, the baseline model showed a similar pattern where the presence of the dropout layer resulted in lower accuracy. This observation could indicate that the removal of dropout layers were beneficial for this task, but the reason was also possibly that the model was underfitting whereas dropout was a mechanism to prevent overfitting. Interestingly, the models with statistical features were not affected by the dropout layer in terms of training and testing accuracy. 
+\subsubsection{Effect of a Dropout Layer after LSTM} % (fold)
+\label{ssub:effect_of_a_dropout_layer_after_lstm}
+
+% subsubsection effect_of_a_dropout_layer_after_lstm (end)
+
+Dropout layers have been shown to decrease model performance on sarcasm detection \citep{ghosh2016}. In our experiment, the baseline model showed a similar pattern where the presence of the dropout layer after the bi-LSTM module resulted in lower accuracy. According to figure \ref{figure:dropout}, models without dropout layers reached lower validation loss. These observations could indicate that the removal of dropout layers could be beneficial for this task, because such a mechanism might cause the elimination of information with discriminative power. On the other hand, the training accuracy (0.75) of the baseline model without dropout was significantly higher than all other models but the testing accuracy was not the highest, which indicated a tendency for such a model to overfit on training data. Based on the lowest validation loss and highest prediction accuracy among the four models in figure \ref{figure:dropout}, the addition of statistical features seemed to counteract overfitting. 
 
 \begin{figure}[h!]
     \centering
@@ -466,9 +471,21 @@ Dropout layers have been shown to decrease model performance on sarcasm detectio
     \label{figure:dropout}
 \end{figure}
 
-According to figure \ref{figure:dropout}, models without dropout layers reached lower validation loss but were also less stable. 
-
 % subsubsection effect_of_dropout (end)
+
+\subsubsection{Effect of a Smaller Hidden Size of LSTM} % (fold)
+\label{ssub:effect_of_a_smaller_hidden_size_of_lstm}
+
+After reducing LSTM hidden size from 64 to 32, we observed an overall performance improvement. The model with statistical features and a smaller hidden size achieved the highest evaluation metrics among all our experiments (see table \ref{table:model_metrics}, table \ref{table:AP}, and figure \ref{figure:hidden_size}). Consider that a smaller hidden size reduced model complexity and that the models did not show indications of overfitting, this result was unexpected. One plausible explaination was that less information at each time step helped the model to capture relevant information. This idea was similar to the finding of one previous study that smaller feature dimension improved model performance on sarcasm detection \citep{ghosh2016}. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{graphs/loss_plots/hidden_size.png}
+    \caption{Validation loss trajectories: effect of LSTM hidden size}
+    \label{figure:hidden_size}
+\end{figure}
+
+% subsubsection effect_of_a_smaller_hidden_size_of_lstm (end)
 
 % subsection model_performance_analysis (end)
 
@@ -476,23 +493,33 @@ According to figure \ref{figure:dropout}, models without dropout layers reached 
 % section experimental_analysis (end)
 
 
+\section{Discussions}
 
 
+<<<<<<< HEAD
 
 
 \subsection{Discussions}
 
 
+=======
+>>>>>>> jinny
 Extrapolate our findings:
 
 
 
+<<<<<<< HEAD
 High-level insight:
 
 Despite the limitations on the computational resources and time, we have achieved reasonable results and provided in-depth analysis, including the comparisons of different models and the performances of each experiments as well.
+=======
+We propose the following approaches that may have further improvements:
+>>>>>>> jinny
 
 
+1. Model complexity and dataset
 
+<<<<<<< HEAD
 We propose the following approaches that may have further improvements:
 
 
@@ -501,6 +528,9 @@ We propose the following approaches that may have further improvements:
 In this project, due to limitations on computation resources and time as well, we randomly partitioned and trained the models over only 1/8 of \num[group-separator={,}]{1044839} data. Besides, we did not fully explore the complexity of the model. Precisely, our models are simply composed of two layers of Bi-LSTM and one layer of CNN, therefore deeper neural networks and the full dataset should produce better performance.
 
 
+=======
+In this project, due to limitations on computation resources and time as well, we randomly partitioned and trained the models over only 1/8 of \num[group-separator={,}]{1044839} data. Besides, we did not fully explore the complexity of the model. Precisely, our models are simply composed of two layers of Bi-LSTM and one layer of CNN, therefore deeper neural networks and the full dataset should produce better performance.
+>>>>>>> jinny
 
 
 
