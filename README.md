@@ -30,14 +30,14 @@ A step by step series of examples that tell you how to get a development env run
 
 Fistly you need to download this repo and there are a few things you need to setup before running the model
 
-- /model/baseline_model/config.json, line 10 & 11
-  You need to setup the absolute path for the training data and validation data to /dev_data/train_0125.csv and /dev_data/valid_0125.csv
+- `/model/baseline_model/config.json`, line 10 & 11
+  You need to setup the absolute path for the training data and validation data to `/dev_data/train_0125.csv` and `/dev_data/valid_0125.csv`
 
-- /model/hybrid_model/config.json, line 10 & 11
-  You need to setup the absolute path for the training data and validation data to /dev_data/train_0125.csv and /dev_data/valid_0125.csv
+- `/model/hybrid_model/config.json`, line 10 & 11
+  You need to setup the absolute path for the training data and validation data to `/dev_data/train_0125.csv` and `/dev_data/valid_0125.csv`
 
-- /model/hybrid_model/myutils.py, line 4
-  You need to setup the absolute path to /dev_data_stats
+- `/model/hybrid_model/myutils.py`, line 4
+  You need to setup the absolute path to `/dev_data_stats`
 
 
 ## Running the tests
