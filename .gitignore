@@ -133,5 +133,5 @@ jinny/*_separate/
 jinny/model_epoch/
 
 # docs
-!references/*
-!docs/*
+references/*
+docs/*
