@@ -118,14 +118,14 @@ report/*
 toy_set*
 
 # data
-dev_data
+dev_data/*
 !dev_data/cleaned_data/train_0125.csv
 !dev_data/cleaned_data/valid_0125.csv
 !dev_data/cleaned_data/test_0125.csv
 !dev_data/stats/train_features.csv
 !dev_data/stats/validation_features.csv
 !dev_data/stats/test_features.csv
-data
+data/*
 
 # extracted features
 extracted_features
@@ -133,5 +133,5 @@ jinny/*_separate/
 jinny/model_epoch/
 
 # docs
-!references
-!docs
+!references/*
+!docs/*
