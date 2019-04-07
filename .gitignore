@@ -119,14 +119,14 @@ toy_set*
 
 # data
 dev_data/*
-data/*
+
 !*/cleaned_data/train_0125.csv
 !*/cleaned_data/valid_0125.csv
 !*/cleaned_data/test_0125.csv
 !*/stats/train_features.csv
 !*/stats/validation_features.csv
 !*/stats/test_features.csv
-
+data/*
 
 # extracted features
 extracted_features
