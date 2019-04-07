@@ -411,7 +411,7 @@ Figure \ref{figure:sentiment_jointplot} shows the joint KDE distribution of pola
 \subsection{Model Performance Analysis} % (fold)
 \label{sub:model_performance_analysis}
 
-We focused our experiments on the goal of comparing the effects of different components in our neural networks model. The metrics information of each model is summarized in table \ref{table:model_metrics}, and the average precision scores calculated using precision-recall function of sklearn package are summarized in table \ref{table:AP}.
+We focused our experiments on the goal of comparing the effects of different components in our neural networks model. The metrics information of each model is summarized in table \ref{table:model_metrics}. To evaluate the performance of these models, we utilized precision-recall function of sklearn package to derive precision-recall curves as shown in figure \ref{figure:prcurve}. The average precision scores calculated using  are summarized in table \ref{table:AP}.
 
 \begin{table}[h!]
     \resizebox{\textwidth}{!}{\begin{tabular}[width=\textwidth]{r|ccccc}
@@ -430,6 +430,13 @@ We focused our experiments on the goal of comparing the effects of different com
 \label{table:model_metrics}
 \end{table}
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{graphs/pr_plot.png}
+    \caption{Precison-recall curve example}
+    \label{figure:prcurve}
+\end{figure}
+
 \begin{table}[h!]
     \centering
     \begin{tabular}{|l|l|l|l|l|}
@@ -444,7 +451,24 @@ We focused our experiments on the goal of comparing the effects of different com
     \label{table:AP}
 \end{table}
 
+We conducted three different experiments to test the effects of hyperparameters on the two models to get a better comprehension of how they differ. In general, models with statistical features performed better than baseline models. Since we restricted our sample sizes and numbers of epochs to accommodate for the limited computational resources, we expected a further expansion on model complexity to result in better performance. In addition, the labels of our data were imbalanced and contained noises, therefore the prediction results might not serve as ideal measurements of our models. In the following sections, we will also examine validation losses to compare models in different experiments. 
 
+
+\subsubsection{Effect of Dropout} % (fold)
+\label{ssub:effect_of_dropout}
+
+Dropout layers have been shown to decrease model performance on sarcasm detection \citep{ghosh2016}. In our experiment, the baseline model showed a similar pattern where the presence of the dropout layer resulted in lower accuracy. This observation could indicate that the removal of dropout layers were beneficial for this task, but the reason was also possibly that the model was underfitting whereas dropout was a mechanism to prevent overfitting. Interestingly, the models with statistical features were not affected by the dropout layer in terms of training and testing accuracy. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{graphs/loss_plots/dropout.png}
+    \caption{Validation loss trajectories: effect of dropout layer}
+    \label{figure:dropout}
+\end{figure}
+
+According to figure \ref{figure:dropout}, models without dropout layers reached lower validation loss but were also less stable. 
+
+% subsubsection effect_of_dropout (end)
 
 % subsection model_performance_analysis (end)
 
