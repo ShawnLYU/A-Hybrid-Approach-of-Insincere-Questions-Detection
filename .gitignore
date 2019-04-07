@@ -109,7 +109,7 @@ report/*
 !report/*.bib
 !report/*.cls
 !report/graphs
-!report/*.pdf
+# !report/*.pdf
 
 # MACOS
 .DS_Store
