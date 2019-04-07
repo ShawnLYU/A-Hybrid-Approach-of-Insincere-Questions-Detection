@@ -59,7 +59,7 @@ This project exists thanks to all the people who contribute.
 
 ## License
 
-This project is licensed under the [MIT](LICENSE) License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the [MIT](LICENSE) License.
 
 ## Acknowledgments
 
