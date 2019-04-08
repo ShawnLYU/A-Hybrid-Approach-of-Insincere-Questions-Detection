@@ -73,8 +73,8 @@
 
 \section{Abstract}
 
-As Q\&A sites become more prevalent, it is critical to detect and reveal patterns of misleading or discriminative questions. In this project, we studied Quora with the focus on questions with non-neutral tone, rhetorical questions, discriminative questions, and questions with sexual contents as shock values. In natural language processing, a lot of research has been conducted over sarcasm, and insincere questions share substantial similarities with it from linguistics interpretations. Therefore,  we transferred and further extend state-of-art approaches of sarcasm detections. In this paper, we proposed a baseline model which is composed of CNN-LSTM and a hybrid model argumented with corpus statistics. Both models utilise ELMo\citep{peters2018deep} as the embedding layer and fine-tuned it within the framework provided by Allennlp\footnote{https://allennlp.org/}. Second, we conducted an in-depth corpus analysis over Quora questions, such as punctuation scores, part-of-speech tagging, named entities, and sentiment scores. Third, we performed evaluations with precision-recall metrics and compare the results with the intended hypothesis. Finally, our hybrid model claimed to outperform the baseline model. Codes are available on Github\footnote{https://github.com/ShawnLYU/Quora-Insincere-Questions-Classification}
-
+As Q\&A websites become more prevalent, it is critical to detect and reveal patterns of misleading or discriminative questions. In this project, we studied Quora corpus with the focus on questions with non-neutral tone, rhetorical questions, discriminative questions, and questions with sexual contents as shock values. We discovered that insincere questions share substantial similarities with sarcasm in terms of their linguistic nature, and sarcasm detection is a widely studied subtopic of sentiment analysis in the field of natural language processing. Therefore,  we transferred and further extended state-of-art sarcasm detection approaches to insincere question classification. In this paper, we proposed a baseline model which is composed of CNN-LSTM and a hybrid model argumented with corpus statistics \footnote{Code is available on Github: https://github.com/ShawnLYU/Quora-Insincere-Questions-Classification}
+. Both models utilized ELMo \citep{peters2018deep} as the embedding layer, which were fine-tuned within the framework provided by Allennlp\footnote{https://allennlp.org/}. To explore the scientific nature of the phenomenon, we conducted an in-depth corpus analysis on Quora questions in four aspects, namely punctuation marks, part-of-speech tags, named entities, and sentiment scores. The analysis revealed significant differences between sincere and insincere questions morphologically, syntactically, and semantically. Third, we performed evaluations using precision-recall metrics, which verified our hypothesis that the hybrid model would outperform the baseline model. 
 
 
 \section{Introduction}
@@ -114,7 +114,7 @@ As we will discuss in the following sections, the combination of different modul
 The second part would be implementing different models, including SVM, RF, and neural networks as well, to perform classification over mapped data.
 
 
-\section{Literature Review}
+\section{Background}
 
 % In this literature review, we will first explain the relationship between sarcasm and insincere questions (section \ref{relations-to-sarcasm}). Then, we will present some feature extraction approaches that are particularly effective for sentiment analysis (section \ref{statistic-features}) and discuss word-embeddings (section \ref{word-embeddings}) which will form the primary basis of our neural networks. Finally, we will review neural networks models that have achieved state-of-art performance with a particular focus on sarcasm detection (section \ref{nn-models}). 
 
@@ -135,7 +135,14 @@ Based on these linguistic characteristics, we hypothesize that methods that are 
 
 \subsection{Statistics-Focused Features} \label{statistic-features}
 
-Statistics-focused features in sentiment classification follow an established pattern where four types of features are frequently examined, namely term frequencies, parts of speech counts, the presence of opinion words, and negations\citep{medhat2014}. The most commonly used statistical feature selection methods include point-wise mutual information, Chi-square, and latent semantics indexing \citep{medhat2014}. Generally speaking, these methods measure the statistical relationship of word occurrence and class identification. These feature selection methods, combined with classifiers such as SVM, have been shown to be effective in certain sentiment analysis tasks \citep{medhat2014}.
+Statistics-focused features in sentiment classification follow an established pattern where four types of features are frequently examined, namely term frequencies, parts of speech counts, the presence of opinion words, and negations\citep{medhat2014}. The most commonly used statistical feature selection methods include point-wise mutual information, Chi-square, and latent semantics indexing \citep{medhat2
+% Despite the limitations on the computational resources and time, we have achieved reasonable results and provided in-depth analysis, including the comparisons of different models and the performances of each experiments as well.
+
+% We propose the following approaches that may have further improvements:
+
+% 1. Model complexity and dataset
+
+% In this project, due to limitations on computation resources and time as well, we randomly partitioned and trained the models over only 1/8 of \num[group-separator={,}]{1044839} data. Besides, we did not fully explore the complexity of the model. Precisely, our models are simply composed of two layers of Bi-LSTM and one layer of CNN, therefore deeper neural networks and the full dataset should014}. Generally speaking, these methods measure the statistical relationship of word occurrence and class identification. These feature selection methods, combined with classifiers such as SVM, have been shown to be effective in certain sentiment analysis tasks \citep{medhat2014}.
  
 In our study, we focus more on presenting corpus statistics and analyzing how such statistical information contribute to a neural-network-based classification process. A particularly relevant study was conducted by \citet{barbosa2010}, where the authors presented a 2-step sentiment analysis method that only utilized an SVM model for the machine learning process, but its feature extraction methods allowed for robustness against noisy data. The researchers developed two feature sets designed to provide abstract representations of short texts: meta-features (including PoS tags and prior subjectivity and polarity) and syntactic features (namely frequencies of certain types of characters). The detection process was divided into two parts: subjectivity detection and polarity detection of the subjective texts. The experiment followed a traditional approach where the classifiers with the highest information gain were created using Weka, and the learning process was completed using SVM algorithm\citep{barbosa2010}. Although this method no longer offers state-of-art performance, we still consider the feature selection methods valuable to our project. We intend to adapt the design in this study to obtain measurements of corpus statistics to feed as features into our neural network models. 
 \subsection{Word Embeddings}
@@ -418,12 +425,13 @@ We focused our experiments on the goal of comparing the effects of different com
 \toprule
                                  model &  peak cpu memory (MB) &  peak gpu memory (MB) & training duration &  epoch &  best validation loss \\
 \midrule
-                               model1 &            7234.532 &                  3889 &          05:07:20 &      7 &              \textbf{0.138458} \\
+                               model1 &            7234.532 &                  3889 &          \textbf{05:07:20} &      7 &              \textbf{0.138458} \\
                      model1 no dropout &            7230.224 &                  \textbf{3891} &          05:45:36 &      8 &              0.127739 \\
             model1 smaller hidden size &            \textbf{7228.960} &                  2525 &          05:08:10 &      7 &              0.127226 \\
                       model with stats &            7303.136 &                  3887 &          05:57:45 &      7 &              0.130264 \\
            model with stats no dropout &            \textbf{7305.552} &                  3887 &          05:13:46 &      \textbf{6} &              0.127354 \\
   model with stats smaller hidden size &            7299.784 &                  \textbf{2523} &          06:42:14 &      8 &              \textbf{0.126276} \\
+  model with truncated stats feature (7 features) & 7335.216 & 3891& \textbf{13:27:28} & \textbf{20} & 0.130859\\
 \bottomrule
 \end{tabular}}
 \caption{Model metrics}
@@ -495,16 +503,20 @@ After reducing LSTM hidden size from 64 to 32, we observed an overall performanc
 
 \section{Discussions}
 
+We have previously established several different categories of insincere questions based on their semantic meanings and a linguistical resemblance between insincere questions and sarcasm. After a closer look at the corpus statistics of Quora questions, we discovered that sincere and insincere questions also showed morphological and syntactical differences such as the differing usage of punctuation marks and parts of speech. Such differences might reflect askers' psychological state, which can be both a reason and a result of proposing an insincere question. These findings serve as underlying scientific explainations of how corpus-statistical features can augment a neural network that captures semantics information in the task of insincere question classification. 
 
-High-level insight:
+We conducted a series of experiments to compare model performance with or without statistical features, and we found that the addition of statistical features improved prediction accuracy and model stability against changes to the baseline model. Therefore, we can safely infer that the addition of statistical feature positively contributed to the overall model performance. We also discovered that the combination of CNN, LSTM, and DNN components was suitable in this task, which was consistent with our hypothesis that state-of-art sarcasm detection models can be transferred to insincere question identification. 
 
-Despite the limitations on the computational resources and time, we have achieved reasonable results and provided in-depth analysis, including the comparisons of different models and the performances of each experiments as well.
+In our current settings, the feature extraction method was relatively simple. We believe that a further elaboration of these methods can lead to better results. Although feature engineering was generally considered as a part of traditional machine learning, our results indicated that features with explicit meanings could augment a deep learning model both in terms of performance and explainablity. 
 
-We propose the following approaches that may have further improvements:
+For future work, we would like to further adjust and improve our approach to better understand the potentials of integrating statistical features with deep learning models. The two primary directions would be: 1) elaborating on feature extraction methods with the potential usage of machine learning based feature selector, and 2) experimenting on various neural networks architectures to reach an optimal solution for the different modules to function together. 
+% Despite the limitations on the computational resources and time, we have achieved reasonable results and provided in-depth analysis, including the comparisons of different models and the performances of each experiments as well.
 
-1. Model complexity and dataset
+% We propose the following approaches that may have further improvements:
 
-In this project, due to limitations on computation resources and time as well, we randomly partitioned and trained the models over only 1/8 of \num[group-separator={,}]{1044839} data. Besides, we did not fully explore the complexity of the model. Precisely, our models are simply composed of two layers of Bi-LSTM and one layer of CNN, therefore deeper neural networks and the full dataset should produce better performance.
+% 1. Model complexity and dataset
+
+% In this project, due to limitations on computation resources and time as well, we randomly partitioned and trained the models over only 1/8 of \num[group-separator={,}]{1044839} data. Besides, we did not fully explore the complexity of the model. Precisely, our models are simply composed of two layers of Bi-LSTM and one layer of CNN, therefore deeper neural networks and the full dataset should produce better performance.
 
 %------------------------------------------------
 
