@@ -7,6 +7,9 @@ This is a NLP project to detect toxic content to improve online conversations su
 
 As Q\&A sites become more prevalent, it is critical to detect and reveal patterns of misleading or discriminative questions. In this project, we studied Quora with the focus on questions with non-neutral tone, rhetorical questions, discriminative questions, and questions with sexual contents as shock values. In natural language processing, a lot of research has been conducted over sarcasm, and insincere questions share substantial similarities with it from linguistics interpretations. Therefore,  we transferred and further extend state-of-art approaches of sarcasm detections. In this paper, we proposed a baseline model which is composed of CNN-LSTM and a hybrid model argumented with corpus statistics. Both models utilise [ELMo](https://allennlp.org/elmo) as the embedding layer and fine-tuned it within the framework provided by [Allennlp](https://allennlp.org/). Second, we conducted an in-depth corpus analysis over Quora questions, such as punctuation scores, part-of-speech tagging, named entities, and sentiment scores. Third, we performed evaluations with precision-recall metrics and compare the results with the intended hypothesis. Finally, our hybrid model claimed to outperform the baseline model.
 
+![alt text](https://github.com/ShawnLYU/Quora-Insincere-Questions-Classification/blob/master/report/graphs/nn_architecture.png)
+
+
 ## Getting Started
 
 These repo will get you a copy of both our baseline model and hybrid model, through which you could have your own NLP analysis. Sample data is provided here for to get your hands dirty.
