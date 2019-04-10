@@ -1,6 +1,6 @@
 # A Hybrid Approach to Insincere Questions Detection
 
-Detailed report could be found at _[A Hybrid Approach of Insincere Questions Detection]https://github.com/ShawnLYU/A-Hybrid-Approach-of-Insincere-Questions-Detection/blob/master/report/csc2511.pdf)_.
+Detailed report could be found at _[A Hybrid Approach of Insincere Questions Detection](https://github.com/ShawnLYU/A-Hybrid-Approach-of-Insincere-Questions-Detection/blob/master/report/csc2511.pdf)_.
 
 ## Description
 This is a NLP project to detect toxic content to improve online conversations supervised by [Prof. Rudzicz](http://www.cs.toronto.edu/~frank/) @ University of Toronto.
