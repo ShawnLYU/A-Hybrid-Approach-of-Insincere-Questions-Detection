@@ -1,4 +1,4 @@
-# A Hybrid Approach to Insincere Questions Detection
+# A Hybrid Approach of Insincere Questions Detection
 
 Detailed report could be found at _[A Hybrid Approach of Insincere Questions Detection](https://github.com/ShawnLYU/A-Hybrid-Approach-of-Insincere-Questions-Detection/blob/master/report/csc2511.pdf)_.
 
