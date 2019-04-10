@@ -1,6 +1,6 @@
 # A Hybrid Approach to Insincere Questions Detection
 
-Detailed report could be found at _[A Hybrid Approach of Insincere Questions Detection](https://github.com/ShawnLYU/Quora-Insincere-Questions-Classification/blob/master/report/csc2511.pdf)_.
+Detailed report could be found at _[A Hybrid Approach of Insincere Questions Detection]https://github.com/ShawnLYU/A-Hybrid-Approach-of-Insincere-Questions-Detection/blob/master/report/csc2511.pdf)_.
 
 ## Description
 This is a NLP project to detect toxic content to improve online conversations supervised by [Prof. Rudzicz](http://www.cs.toronto.edu/~frank/) @ University of Toronto.
@@ -10,7 +10,7 @@ As Q\&A websites become more prevalent, it is critical to detect and reveal patt
 
 
 <p align="center">
-  <img src='https://github.com/ShawnLYU/Quora-Insincere-Questions-Classification/blob/master/report/graphs/nn_architecture.png'/>
+  <img src='https://github.com/ShawnLYU/A-Hybrid-Approach-of-Insincere-Questions-Detection/blob/master/report/graphs/nn_architecture.png'/>
 </p>
 
 ## Getting Started
